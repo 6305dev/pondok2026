@@ -7,16 +7,8 @@ class WhatsappHelper
     public static function sendMessage($phone, $message)
     {
 
-
-        /**
-         * Ini kalau pakai konfigurasi dari .env
-         * 
-         * $url = config('services.whatsapp.api_url');
-         * $key = config('services.whatsapp.api_key');
-         */
-
-        $url = 'http://36.91.137.28:7000/send-message';
-        $key = 'pondok6305';
+        $url = config('services.whatsapp.api_url');
+        $key = config('services.whatsapp.api_key');
 
         // Payload JSON yang akan dikirim
         $payload = [

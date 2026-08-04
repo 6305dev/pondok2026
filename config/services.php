@@ -41,9 +41,9 @@ return [
     ],
 
     'whatsapp' => [
-        'url' => env('WHATSAPP_URL', 'http://36.91.137.28:7000/api/send-message'),
-        'token' => env('WHATSAPP_TOKEN', 'waapi2026'),
-        'referal' => env('WHATSAPP_REFERAL', 'pondok'),
+        'url' => env('WHATSAPP_URL'),
+        'token' => env('WHATSAPP_TOKEN'),
+        'referal' => env('WHATSAPP_REFERAL'),
     ],
 
 ];
