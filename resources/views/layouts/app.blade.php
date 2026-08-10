@@ -94,9 +94,14 @@
     <script>
         var swiper = new Swiper(".mySwiper", {
             loop: true
-            , slidesPerView: 2
-            , centeredSlides: false
-            , spaceBetween: 30
+            , slidesPerView: 1
+            , spaceBetween: 15
+            , breakpoints: {
+                640: {
+                    slidesPerView: 2
+                    , spaceBetween: 30
+                }
+            }
             , autoplay: {
                 delay: 3000
                 , disableOnInteraction: false
