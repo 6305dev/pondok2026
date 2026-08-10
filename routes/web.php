@@ -123,9 +123,10 @@ Route::middleware(['auth'])->group(function () {
         if (!$kecamatanId) {
             return response()->json([]);
         }
-        return SetupKel::where('kecamatan_id', $kecamatanId)
-            ->select('kode_desa', 'nama')
-            ->get();
+        return response()->json(
+            SetupKel::where('kecamatan_id', $kecamatanId)
+                ->get(['kode_desa', 'nama'])
+        );
     })->name('admin.desa');
 
         // Rute Khusus Admin (Tidak boleh diakses Operator)
