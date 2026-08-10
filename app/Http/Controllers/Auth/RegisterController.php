@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\WhatsAppHelper;
 use App\Models\SetupKec; // Menggunakan model untuk mengambil data kecamatan
 use Illuminate\Validation\ValidationException;
 
@@ -112,30 +113,7 @@ class RegisterController extends Controller
         
         $message = "Halo *{$user->name}*,\n\nPendaftaran akun Anda berhasil di Pondok App.\n\nMasukkan kode OTP berikut untuk mengaktifkan akun Anda:\n*{$otp}*\n\nAtau klik tautan berikut untuk aktivasi otomatis:\n{$activationUrl}\n\n*Catatan:* Kode OTP ini berlaku selama 15 menit.";
 
-        try {
-            // Format nomor telepon ke format internasional (62)
-            $phone = preg_replace('/[^0-9]/', '', $user->phone);
-            if (str_starts_with($phone, '0')) {
-                $phone = '62' . substr($phone, 1);
-            }
-
-            \Illuminate\Support\Facades\Log::info('Mencoba mengirim WA OTP ke: ' . $phone);
-            $response = \Illuminate\Support\Facades\Http::withHeaders([
-                'x-api-key' => config('services.whatsapp.token'),
-            ])->post(config('services.whatsapp.url'), [
-                'number'  => $phone,
-                'message' => $message,
-                'referal' => config('services.whatsapp.referal'),
-            ]);
-
-            if ($response->successful()) {
-                \Illuminate\Support\Facades\Log::info('WhatsApp OTP terkirim sukses (200): ' . $response->body());
-            } else {
-                \Illuminate\Support\Facades\Log::error('Gagal kirim WhatsApp OTP. Status: ' . $response->status() . ' Respon: ' . $response->body());
-            }
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Gagal mengirim WhatsApp OTP (Exception): ' . $e->getMessage());
-        }
+        WhatsAppHelper::sendMessage($user->phone, $message);
     }
 
     /**

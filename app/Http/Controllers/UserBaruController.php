@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\WhatsAppHelper;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -98,53 +99,6 @@ class UserBaruController extends Controller
 
     public function sendWhatsapp($phone, $message)
     {
-        $url = config('services.whatsapp.url');
-        $token = config('services.whatsapp.token');
-        $referal = config('services.whatsapp.referal');
-
-        // Format nomor telepon ke format internasional (62)
-        $phone = preg_replace('/[^0-9]/', '', $phone);
-        if (str_starts_with($phone, '0')) {
-            $phone = '62' . substr($phone, 1);
-        }
-
-        // Data yang dikirim dalam format JSON
-        $payload = [
-            "number"   => $phone,
-            "message" => $message,
-            "referal" => $referal,
-        ];
-
-        // Inisialisasi cURL
-        $ch = curl_init($url);
-
-        // Set opsi cURL
-        curl_setopt_array($ch, [
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST           => true,
-            CURLOPT_HTTPHEADER     => [
-                "Content-Type: application/json",
-                "x-api-key: $token"
-            ],
-            CURLOPT_POSTFIELDS     => json_encode($payload)
-        ]);
-
-        // Eksekusi request
-        $response = curl_exec($ch);
-
-        // Tangani error
-        if (curl_errno($ch)) {
-            $error_msg = curl_error($ch);
-            curl_close($ch);
-            return ["success" => false, "error" => $error_msg];
-        }
-
-        // Tutup koneksi
-        curl_close($ch);
-
-        // Decode hasil response (jika JSON)
-        $result = json_decode($response, true);
-
-        return $result ?: ["success" => false, "error" => "Invalid response"];
+        return WhatsAppHelper::sendMessage($phone, $message);
     }
 }

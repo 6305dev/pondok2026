@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use App\Helpers\WhatsAppHelper;
 use App\Models\User;
 
 class ForgotPasswordController extends Controller
@@ -66,45 +67,20 @@ class ForgotPasswordController extends Controller
         // 4. Susun Link Reset
         $resetUrl = url("/password/reset/{$token}?nik=" . $user->nik);
 
-        // Format nomor telepon ke format internasional (62)
-        $phone = preg_replace('/[^0-9]/', '', $user->phone);
-        if (str_starts_with($phone, '0')) {
-            $phone = '62' . substr($phone, 1);
-        }
+        $message = "Halo *{$user->name}*,\n\nKami menerima permintaan reset password untuk akun Anda.\n\nKlik link di bawah ini untuk mengatur ulang password Anda:\n{$resetUrl}\n\n*Catatan:* Tautan reset password ini hanya berlaku selama 15 menit.";
 
-        try {
-            // Jika Anda menggunakan provider lain, sesuaikan bagian post() ini
-            $response = Http::withHeaders([
-                'x-api-key' => config('services.whatsapp.token'),
-            ])->post(config('services.whatsapp.url'), [
-                'number'  => $phone,
-                'message' => "Halo *{$user->name}*,\n\nKami menerima permintaan reset password untuk akun Anda.\n\nKlik link di bawah ini untuk mengatur ulang password Anda:\n{$resetUrl}\n\n*Catatan:* Tautan reset password ini hanya berlaku selama 15 menit.",
-                'referal' => config('services.whatsapp.referal'),
-            ]);
+        $result = WhatsAppHelper::sendMessage($user->phone, $message);
 
-            // Log request payload for debugging
-            \Illuminate\Support\Facades\Log::info('Mencoba mengirim WA ke: ' . $phone . ' URL: ' . config('services.whatsapp.url'));
-
-            if ($response->successful()) {
-                \Illuminate\Support\Facades\Log::info('Respon WhatsApp Sukses (200): ' . $response->body());
-                return back()->with('swal', [
-                    'title' => 'Berhasil!',
-                    'text' => 'Link reset password telah dikirim ke nomor WhatsApp Anda.',
-                    'icon' => 'success'
-                ]);
-            } else {
-                \Illuminate\Support\Facades\Log::error('Respon WhatsApp Gagal (' . $response->status() . '): ' . $response->body());
-                return back()->with('swal', [
-                    'title' => 'Gagal Mengirim',
-                    'text' => 'Gagal mengirim pesan reset password (HTTP ' . $response->status() . ').',
-                    'icon' => 'error'
-                ]);
-            }
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Gagal mengirim WhatsApp reset password (Exception): ' . $e->getMessage());
+        if ($result['success']) {
             return back()->with('swal', [
-                'title' => 'Koneksi Gagal',
-                'text' => 'Gagal terhubung ke WhatsApp Gateway (Timeout). Silakan coba beberapa saat lagi.',
+                'title' => 'Berhasil!',
+                'text' => 'Link reset password telah dikirim ke nomor WhatsApp Anda.',
+                'icon' => 'success'
+            ]);
+        } else {
+            return back()->with('swal', [
+                'title' => 'Gagal Mengirim',
+                'text' => 'Gagal mengirim pesan reset password. Silakan coba beberapa saat lagi.',
                 'icon' => 'error'
             ]);
         }
