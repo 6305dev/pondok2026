@@ -8,7 +8,7 @@
         <!-- Logo & Brand (Kiri) -->
         <div class="flex items-center space-x-3">
             <a href="/" aria-label="Halaman Utama Disdukcapil Tapin" class="focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-lg p-1">
-                <img src="{{ asset('icon/jargon2.png') }}" alt="Logo Disdukcapil Kabupaten Tapin" class="h-10 md:h-12 w-auto object-contain">
+                <img src="{{ asset('icon/jargon2.webp') }}" alt="Logo Disdukcapil Kabupaten Tapin" class="h-10 md:h-12 w-auto object-contain">
             </a>
         </div>
 
@@ -18,7 +18,7 @@
                 <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 md:w-5 md:h-5 animate-bounce">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
                 </svg>
-                <span>Pasang Aplikasi</span>
+                <span>Install Aplikasi</span>
             </button>
         </div>
     </div>
@@ -26,106 +26,135 @@
 
 <main id="main-content" class="max-w-6xl mx-auto px-4 py-6">
 
-    @if(isset($slides) && $slides->count() > 0)
-    <section aria-label="Galeri Informasi" class="mb-6">
-        <div class="swiper mySwiper rounded-lg shadow-xl">
-            <div class="swiper-wrapper">
-                @foreach($slides as $slide)
-                <div class="swiper-slide flex justify-center">
-                    <a href="{{ asset('images/' . $slide->filename) }}" data-src="{{ asset('images/' . $slide->filename) }}" aria-label="Lihat foto {{ $slide->judul }}" class="lightbox-link relative w-full h-full block overflow-hidden rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-600">
-                        <img src="{{ asset('images/' . $slide->filename) }}" class="w-full h-full object-cover rounded-2xl" alt="{{ $slide->judul ?? 'Informasi Disdukcapil Tapin' }}">
-                    </a>
+    <!-- Skeleton Loading State (WCAG Accessible Placeholder) -->
+    <div id="home-skeleton" class="space-y-6 animate-pulse" aria-busy="true" aria-live="polite" aria-label="Memuat Konten Beranda">
+        <span class="sr-only">Sedang memuat konten halaman utama...</span>
+        
+        <!-- Slider Skeleton -->
+        <div class="w-full h-48 sm:h-64 md:h-72 bg-gray-300/80 rounded-2xl shadow-lg"></div>
+        
+        <!-- Grid Menu Skeleton -->
+        <div class="bg-white/70 backdrop-blur-md rounded-2xl shadow-xl p-4 md:p-6">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                @for($i = 0; $i < 6; $i++)
+                <div class="flex flex-col items-center justify-center p-4 bg-gray-200/80 rounded-xl space-y-3">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-gray-300 rounded-full"></div>
+                    <div class="h-4 w-20 bg-gray-300 rounded-md"></div>
                 </div>
-                @endforeach
+                @endfor
             </div>
-            <div class="swiper-pagination"></div>
         </div>
-    </section>
-    @endif
 
-    <section aria-label="Menu Utama Layanan" class="mt-6 bg-white/70 backdrop-blur-md rounded-2xl shadow-xl p-4 md:p-6">
-        <h2 class="sr-only">Menu Utama Layanan</h2>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-            {{-- Layanan Online --}}
-            <a href="{{ route('layanan.index') }}" id="layanan-online-link" class="flex flex-col items-center justify-center p-4 bg-white/80 rounded-xl shadow hover:shadow-md transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
-                <img src="{{ asset('icon/online2.png') }}" alt="" aria-hidden="true" class="h-12 w-12 md:h-14 md:w-14 object-contain mb-2">
-                <span class="text-sm font-bold text-center text-gray-900">Layanan</span>
-            </a>
-
-            {{-- Formulir --}}
-            <a href="/formulir" class="flex flex-col items-center justify-center p-4 bg-white/80 rounded-xl shadow hover:shadow-md transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
-                <img src="{{ asset('icon/formulir.png') }}" alt="" aria-hidden="true" class="h-12 w-12 md:h-14 md:w-14 object-contain mb-2">
-                <span class="text-sm font-bold text-center text-gray-900">Formulir</span>
-            </a>
-
-            {{-- Persyaratan --}}
-            <a href="/persyaratan" class="flex flex-col items-center justify-center p-4 bg-white/80 rounded-xl shadow hover:shadow-md transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
-                <img src="{{ asset('icon/syarat1.png') }}" alt="" aria-hidden="true" class="h-12 w-12 md:h-14 md:w-14 object-contain mb-2">
-                <span class="text-sm font-bold text-center text-gray-900">Persyaratan</span>
-            </a>
-
-            {{-- Tutorial --}}
-            <button id="tutorial-btn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="video-modal" class="flex flex-col items-center justify-center p-4 bg-white/80 rounded-xl shadow hover:shadow-md transform transition duration-200 hover:scale-105 hover:bg-blue-50 w-full focus:outline-none focus:ring-2 focus:ring-blue-600">
-                <img src="{{ asset('icon/Tutorial1.png') }}" alt="" aria-hidden="true" class="h-12 w-12 md:h-14 md:w-14 object-contain mb-2">
-                <span class="text-sm font-bold text-center text-gray-900">Tutorial</span>
-            </button>
-
-            {{-- SKM --}}
-            <a href="https://skm.go.id/share/instansi/98445cc2-e8f5-445f-b27d-036005f06e3d/1" target="_blank" rel="noopener noreferrer" aria-label="Survei Kepuasan Masyarakat (SKM) - Buka di tab baru" class="flex flex-col items-center justify-center p-4 bg-white/80 rounded-xl shadow hover:shadow-md transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
-                <img src="{{ asset('icon/konsultasi.png') }}" alt="" aria-hidden="true" class="h-12 w-12 md:h-14 md:w-14 object-contain mb-2">
-                <span class="text-sm font-bold text-center text-gray-900">SKM</span>
-            </a>
-
-            {{-- Login / Logout --}}
-            @auth
-            <a href="{{ route('logout') }}" aria-label="Keluar Akun" class="flex flex-col items-center justify-center p-4 bg-white/80 rounded-xl shadow hover:shadow-md transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                <img src="{{ asset('icon/Logout1.png') }}" alt="" aria-hidden="true" class="h-12 w-12 md:h-14 md:w-14 object-contain mb-2">
-                <span class="text-sm font-bold text-center text-gray-900">Logout</span>
-            </a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                @csrf
-            </form>
-            @else
-            <a href="{{ route('login') }}" aria-label="Masuk Akun" class="flex flex-col items-center justify-center p-4 bg-white/80 rounded-xl shadow hover:shadow-md transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
-                <img src="{{ asset('icon/login.png') }}" alt="" aria-hidden="true" class="h-12 w-12 md:h-14 md:w-14 object-contain mb-2">
-                <span class="text-sm font-bold text-center text-gray-900">Login</span>
-            </a>
-            @endauth
+        <!-- Banner Identitas Instansi Skeleton -->
+        <div class="bg-white/70 backdrop-blur-md rounded-2xl shadow-lg p-6 flex flex-col items-center space-y-3 border border-white/60">
+            <div class="h-8 w-48 bg-gray-300 rounded-md"></div>
+            <div class="h-4 w-64 bg-gray-300 rounded-md"></div>
         </div>
-    </section>
+    </div>
 
-    <section aria-label="Identitas Instansi" class="mt-6 text-center bg-white/70 backdrop-blur-md rounded-2xl shadow-lg p-5 md:p-8 border border-white/60">
-        <style>
-            .merah {
-                color: #1d4ed8; /* WCAG compliant blue contrast >= 4.5:1 */
-                font-weight: bold;
-            }
+    <!-- Main Real Content Container -->
+    <div id="home-real-content" class="hidden transition-opacity duration-300">
+        @if(isset($slides) && $slides->count() > 0)
+        <section aria-label="Galeri Informasi" class="mb-6">
+            <div class="swiper mySwiper rounded-lg shadow-xl">
+                <div class="swiper-wrapper">
+                    @foreach($slides as $slide)
+                    <div class="swiper-slide flex justify-center">
+                        <a href="{{ asset('images/' . $slide->filename) }}" data-src="{{ asset('images/' . $slide->filename) }}" aria-label="Lihat foto {{ $slide->judul }}" class="lightbox-link relative w-full h-full block overflow-hidden rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-600">
+                            <img src="{{ asset('images/' . $slide->filename) }}" class="w-full h-full object-cover rounded-2xl" alt="{{ $slide->judul ?? 'Informasi Disdukcapil Tapin' }}">
+                        </a>
+                    </div>
+                    @endforeach
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </section>
+        @endif
 
-            .biru {
-                color: #15803d; /* WCAG compliant green contrast >= 4.5:1 */
-                font-weight: bold;
-            }
+        <section aria-label="Menu Utama Layanan" class="mt-6 bg-white/70 backdrop-blur-md rounded-2xl shadow-xl p-4 md:p-6">
+            <h2 class="sr-only">Menu Utama Layanan</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                {{-- Layanan Online --}}
+                <a href="{{ route('layanan.index') }}" id="layanan-online-link" class="flex flex-col items-center justify-center p-4 bg-white/80 rounded-xl shadow hover:shadow-md transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                    <img src="{{ asset('icon/online2.webp') }}" alt="" aria-hidden="true" class="h-12 w-12 md:h-14 md:w-14 object-contain mb-2">
+                    <span class="text-sm font-bold text-center text-gray-900">Layanan</span>
+                </a>
 
-            .hijau {
-                color: #c2410c; /* WCAG compliant dark orange contrast >= 4.5:1 */
-                font-weight: bold;
-            }
+                {{-- Formulir --}}
+                <a href="/formulir" class="flex flex-col items-center justify-center p-4 bg-white/80 rounded-xl shadow hover:shadow-md transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                    <img src="{{ asset('icon/formulir.webp') }}" alt="" aria-hidden="true" class="h-12 w-12 md:h-14 md:w-14 object-contain mb-2">
+                    <span class="text-sm font-bold text-center text-gray-900">Formulir</span>
+                </a>
 
-            .kuning {
-                color: #b91c1c; /* WCAG compliant red contrast >= 4.5:1 */
-                font-weight: bold;
-            }
-        </style>
-        <div>
-            <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight tracking-wide">
-                <span class="merah">DIS</span><span class="biru">DUK</span><span class="hijau">CA</span><span class="kuning">PIL</span>
-            </h1>
-            <p class="text-xs sm:text-sm md:text-base text-gray-800 font-semibold mt-2 leading-relaxed">
-                <span class="merah">P</span>elayanan <span class="biru">On</span>line
-                <span class="hijau">Do</span>kumen <span class="kuning">K</span>ependudukan
-            </p>
-        </div>
-    </section>
+                {{-- Persyaratan --}}
+                <a href="/persyaratan" class="flex flex-col items-center justify-center p-4 bg-white/80 rounded-xl shadow hover:shadow-md transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                    <img src="{{ asset('icon/syarat1.webp') }}" alt="" aria-hidden="true" class="h-12 w-12 md:h-14 md:w-14 object-contain mb-2">
+                    <span class="text-sm font-bold text-center text-gray-900">Persyaratan</span>
+                </a>
+
+                {{-- Tutorial --}}
+                <button id="tutorial-btn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="video-modal" class="flex flex-col items-center justify-center p-4 bg-white/80 rounded-xl shadow hover:shadow-md transform transition duration-200 hover:scale-105 hover:bg-blue-50 w-full focus:outline-none focus:ring-2 focus:ring-blue-600">
+                    <img src="{{ asset('icon/Tutorial1.webp') }}" alt="" aria-hidden="true" class="h-12 w-12 md:h-14 md:w-14 object-contain mb-2">
+                    <span class="text-sm font-bold text-center text-gray-900">Tutorial</span>
+                </button>
+
+                {{-- SKM --}}
+                <a href="https://skm.go.id/share/instansi/98445cc2-e8f5-445f-b27d-036005f06e3d/1" target="_blank" rel="noopener noreferrer" aria-label="Survei Kepuasan Masyarakat (SKM) - Buka di tab baru" class="flex flex-col items-center justify-center p-4 bg-white/80 rounded-xl shadow hover:shadow-md transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                    <img src="{{ asset('icon/konsultasi.webp') }}" alt="" aria-hidden="true" class="h-12 w-12 md:h-14 md:w-14 object-contain mb-2">
+                    <span class="text-sm font-bold text-center text-gray-900">SKM</span>
+                </a>
+
+                {{-- Login / Logout --}}
+                @auth
+                <a href="{{ route('logout') }}" aria-label="Keluar Akun" class="flex flex-col items-center justify-center p-4 bg-white/80 rounded-xl shadow hover:shadow-md transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <img src="{{ asset('icon/Logout1.webp') }}" alt="" aria-hidden="true" class="h-12 w-12 md:h-14 md:w-14 object-contain mb-2">
+                    <span class="text-sm font-bold text-center text-gray-900">Logout</span>
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+                @else
+                <a href="{{ route('login') }}" aria-label="Masuk Akun" class="flex flex-col items-center justify-center p-4 bg-white/80 rounded-xl shadow hover:shadow-md transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                    <img src="{{ asset('icon/login.webp') }}" alt="" aria-hidden="true" class="h-12 w-12 md:h-14 md:w-14 object-contain mb-2">
+                    <span class="text-sm font-bold text-center text-gray-900">Login</span>
+                </a>
+                @endauth
+            </div>
+        </section>
+
+        <section aria-label="Identitas Instansi" class="mt-6 text-center bg-white/70 backdrop-blur-md rounded-2xl shadow-lg p-5 md:p-8 border border-white/60">
+            <style>
+                .merah {
+                    color: #1d4ed8; /* WCAG compliant blue contrast >= 4.5:1 */
+                    font-weight: bold;
+                }
+
+                .biru {
+                    color: #15803d; /* WCAG compliant green contrast >= 4.5:1 */
+                    font-weight: bold;
+                }
+
+                .hijau {
+                    color: #c2410c; /* WCAG compliant dark orange contrast >= 4.5:1 */
+                    font-weight: bold;
+                }
+
+                .kuning {
+                    color: #b91c1c; /* WCAG compliant red contrast >= 4.5:1 */
+                    font-weight: bold;
+                }
+            </style>
+            <div>
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight tracking-wide">
+                    <span class="merah">DIS</span><span class="biru">DUK</span><span class="hijau">CA</span><span class="kuning">PIL</span>
+                </h1>
+                <p class="text-xs sm:text-sm md:text-base text-gray-800 font-semibold mt-2 leading-relaxed">
+                    <span class="merah">P</span>elayanan <span class="biru">On</span>line
+                    <span class="hijau">Do</span>kumen <span class="kuning">K</span>ependudukan
+                </p>
+            </div>
+        </section>
+    </div>
 </main>
 
 {{-- HTML MODAL VIDEO TUTORIAL --}}
@@ -149,6 +178,14 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Toggle Skeleton Loader off and reveal real content
+        const homeSkeleton = document.getElementById('home-skeleton');
+        const homeRealContent = document.getElementById('home-real-content');
+        if (homeSkeleton && homeRealContent) {
+            homeSkeleton.classList.add('hidden');
+            homeRealContent.classList.remove('hidden');
+        }
+
         // Variabel untuk modal video
         const videoModal = document.getElementById('video-modal');
         const tutorialBtn = document.getElementById('tutorial-btn');
@@ -204,11 +241,11 @@
                 if (isIos() && !isInStandaloneMode()) {
                     // Show iOS specific instructions using SweetAlert
                     Swal.fire({
-                        title: 'Instal Aplikasi di iOS',
+                        title: 'Instal Aplikasi',
                         html: `<div class="text-left text-sm space-y-3 leading-relaxed text-gray-600">
-                                <p>Untuk memasang aplikasi di iPhone/iPad Anda:</p>
+                                <p>Untuk memasang aplikasi di smartphone Anda:</p>
                                 <ol class="list-decimal list-inside space-y-2">
-                                    <li>Tekan tombol <strong>Bagikan (Share)</strong> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="inline w-5 h-5 text-blue-600"><path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" /></svg> di bagian bawah layar browser Safari Anda.</li>
+                                    <li>Tekan tombol <strong>Bagikan (Share)</strong> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="inline w-5 h-5 text-blue-600"><path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" /></svg> di bagian bawah layar browser Anda.</li>
                                     <li>Gulir menu ke bawah lalu pilih opsi <strong>Tambahkan ke Layar Utama (Add to Home Screen)</strong>.</li>
                                     <li>Klik tombol <strong>Tambah (Add)</strong> di pojok kanan atas untuk menyelesaikan.</li>
                                 </ol>

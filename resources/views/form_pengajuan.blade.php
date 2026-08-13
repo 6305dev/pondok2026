@@ -422,7 +422,6 @@
 
             </div>
         </div>
-        <p class="text-center text-gray-700 font-semibold text-xs mt-6">© 2026 Pondok Dukcapil V-2.1.1 - Layanan Online</p>
     </div>
     <span x-effect="
         if (currentStep === 3) {

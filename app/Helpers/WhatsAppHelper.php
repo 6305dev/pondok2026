@@ -2,53 +2,73 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+
 class WhatsAppHelper
 {
+    /**
+     * Kirim pesan WhatsApp melalui API Gateway
+     *
+     * @param string $phone Nomor WhatsApp penerima
+     * @param string $message Pesan yang akan dikirim
+     * @return array Status pengiriman ['success' => bool, 'status' => int, 'response' => mixed, 'error' => string|null]
+     */
     public static function sendMessage($phone, $message)
     {
-
-        $url = config('services.whatsapp.api_url');
-        $key = config('services.whatsapp.api_key');
-
-        // Payload JSON yang akan dikirim
-        $payload = [
-            'phone'   => $phone,
-            'message' => $message,
-            'key'    => $key,
-        ];
-
-        // Inisialisasi cURL
-        $ch = curl_init($url);
-
-        curl_setopt_array($ch, [
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST => true,
-            CURLOPT_HTTPHEADER => [
-                'Content-Type: application/json',
-            ],
-            CURLOPT_POSTFIELDS => json_encode($payload),
-            CURLOPT_TIMEOUT => 15,
-        ]);
-
-        $response = curl_exec($ch);
-        $error = curl_error($ch);
-        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        if ($error) {
-            return [
-                'success' => false,
-                'error' => $error,
-            ];
+        // 1. Format nomor telepon ke format internasional (62)
+        $formattedPhone = preg_replace('/[^0-9]/', '', $phone);
+        if (str_starts_with($formattedPhone, '0')) {
+            $formattedPhone = '62' . substr($formattedPhone, 1);
         }
 
-        // Decode JSON response (jika API-nya memang kirim JSON)
-        $decoded = json_decode($response, true);
+        // 2. Normalisasi pesan agar mendukung newline (\n) dan format WhatsApp (*bold*, _italic_, ~strikethrough~, dll)
+        $formattedMessage = str_replace(["\r\n", "\r", '\n'], "\n", $message);
 
-        return [
-            'success' => $statusCode >= 200 && $statusCode < 300,
-            'status' => $statusCode,
-            'response' => $decoded ?: $response,
-        ];
+        $url     = config('services.whatsapp.url');
+        $token   = config('services.whatsapp.token');
+        $referal = config('services.whatsapp.referal');
+
+        Log::info("Mencoba mengirim WA ke: {$formattedPhone} | URL: {$url}");
+
+        try {
+            $response = Http::withHeaders([
+                'x-api-key' => $token,
+            ])->timeout(15)->post($url, [
+                'number'  => $formattedPhone,
+                'message' => $formattedMessage,
+                'referal' => $referal,
+            ]);
+
+            $statusCode = $response->status();
+            $decoded = $response->json();
+
+            if ($response->successful()) {
+                Log::info("Respon WhatsApp Sukses ({$statusCode}): " . $response->body());
+                return [
+                    'success'  => true,
+                    'status'   => $statusCode,
+                    'response' => $decoded ?: $response->body(),
+                    'error'    => null,
+                ];
+            } else {
+                Log::error("Respon WhatsApp Gagal ({$statusCode}): " . $response->body());
+                return [
+                    'success'  => false,
+                    'status'   => $statusCode,
+                    'response' => $decoded ?: $response->body(),
+                    'error'    => "HTTP Error Code: {$statusCode}",
+                ];
+            }
+        } catch (\Exception $e) {
+            Log::error("Gagal mengirim WhatsApp (Exception): " . $e->getMessage());
+            return [
+                'success'  => false,
+                'status'   => 500,
+                'response' => null,
+                'error'    => $e->getMessage(),
+            ];
+        }
     }
 }
+

@@ -1,11 +1,8 @@
 @extends('layouts.app')
 @section('content')
-<main id="main-content" class="max-w-7xl mx-auto px-4 py-8">
+<main id="main-content" class="max-w-7xl mx-auto px-5 py-8">
     <div class="text-center mb-8">
-        <div class="w-24 h-24 mx-auto mb-4">
-            <img src="{{ asset('icon/logo4.png') }}" alt="Ikon Layanan Online" class="w-full h-full object-contain">
-        </div>
-        <h1 class="text-3xl font-extrabold text-gray-900 mb-2">Informasi & Layanan Online</h1>
+        <h1 class="text-3xl font-extrabold text-gray-900 mb-2">Menu Layanan</h1>
         <p class="text-sm md:text-base text-gray-800 font-semibold max-w-3xl mx-auto leading-relaxed">Silahkan klik tombol <strong class="text-blue-800 font-bold">Informasi</strong> di setiap layanan yang dipilih, agar dapat memahami detail layanannya. Siapkan <strong class="text-red-800 font-bold">foto (asli)</strong> persyaratan, dan semua <strong class="text-red-800 font-bold">wajib</strong> dilengkapi.</p>
     </div>
 
@@ -15,7 +12,7 @@
             <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-500 ease-out border-2 border-transparent hover:shadow-xl hover:scale-[1.02] hover:border-blue-500 h-full flex flex-col justify-between">
                 <div>
                     <div class="bg-blue-50 p-6 flex justify-center">
-                        <img src="{{ asset('icon/ktp.png') }}" alt="Gambar KTP-EL" class="w-32 h-32 object-contain">
+                        <img src="{{ asset('icon/ktp.webp') }}" alt="Gambar KTP-EL" class="w-32 h-32 object-contain">
                     </div>
                     <div class="p-6">
                         <h2 class="text-xl font-bold text-gray-900 mb-2">KTP-EL</h2>
@@ -60,7 +57,7 @@
                                         </div>
                                     </div>
                                     `,
-                                    '/form_pengajuan?keterangan=KTP&judul=Kartu%20Tanda%20Penduduk&icon=ktp.png',
+                                    '/form_pengajuan?keterangan=KTP&judul=Kartu%20Tanda%20Penduduk&icon=ktp.webp',
                                     '/login',
                                     '/register'
                                 )"
@@ -96,7 +93,7 @@
             <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-500 ease-out border-2 border-transparent hover:shadow-xl hover:scale-[1.02] hover:border-blue-500 h-full flex flex-col justify-between">
                 <div>
                     <div class="bg-blue-50 p-6 flex justify-center">
-                        <img src="{{ asset('icon/kk.png') }}" alt="Gambar Kartu Keluarga" class="w-32 h-32 object-contain">
+                        <img src="{{ asset('icon/kk.webp') }}" alt="Gambar Kartu Keluarga" class="w-32 h-32 object-contain">
                     </div>
                     <div class="p-6">
                         <h2 class="text-xl font-bold text-gray-900 mb-2">Kartu Keluarga</h2>
@@ -141,7 +138,7 @@
                                         </div>
                                     </div>
                                     `,
-                                    '/form_pengajuan?keterangan=KK&judul=Kartu%20Keluarga&icon=kk.png',
+                                    '/form_pengajuan?keterangan=KK&judul=Kartu%20Keluarga&icon=kk.webp',
                                     '/login',
                                     '/register'
                                 )"
@@ -177,7 +174,7 @@
             <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-500 ease-out border-2 border-transparent hover:shadow-xl hover:scale-[1.02] hover:border-blue-500 h-full flex flex-col justify-between">
                 <div>
                     <div class="bg-blue-50 p-6 flex justify-center">
-                        <img src="{{ asset('icon/kia.png') }}" alt="Gambar Kartu Identitas Anak" class="w-32 h-32 object-contain">
+                        <img src="{{ asset('icon/kia.webp') }}" alt="Gambar Kartu Identitas Anak" class="w-32 h-32 object-contain">
                     </div>
                     <div class="p-6">
                         <h2 class="text-xl font-bold text-gray-900 mb-2">KIA</h2>
@@ -224,7 +221,7 @@
                                         </div>
                                     </div>
                                     `,
-                                    '/form_pengajuan?keterangan=KIA&judul=Kartu%20Identitas%20Anak&icon=kia.png',
+                                    '/form_pengajuan?keterangan=KIA&judul=Kartu%20Identitas%20Anak&icon=kia.webp',
                                     '/login',
                                     '/register'
                                 )"
@@ -260,7 +257,7 @@
             <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-500 ease-out border-2 border-transparent hover:shadow-xl hover:scale-[1.02] hover:border-blue-500 h-full flex flex-col justify-between">
                 <div>
                     <div class="bg-blue-50 p-6 flex justify-center">
-                        <img src="{{ asset('icon/akta-kelahiran.png') }}" alt="Gambar Akta Kelahiran" class="w-32 h-32 object-contain">
+                        <img src="{{ asset('icon/akta-kelahiran.webp') }}" alt="Gambar Akta Kelahiran" class="w-32 h-32 object-contain">
                     </div>
                     <div class="p-6">
                         <h2 class="text-xl font-bold text-gray-900 mb-2">Akta Kelahiran</h2>
@@ -307,7 +304,7 @@
                                         </div>
                                     </div>
                                     `,
-                                    '/form_pengajuan?keterangan=ALH&judul=Akta%20Kelahiran&icon=akta-kelahiran.png',
+                                    '/form_pengajuan?keterangan=ALH&judul=Akta%20Kelahiran&icon=akta-kelahiran.webp',
                                     '/login',
                                     '/register'
                                 )"
@@ -343,7 +340,7 @@
             <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-500 ease-out border-2 border-transparent hover:shadow-xl hover:scale-[1.02] hover:border-blue-500 h-full flex flex-col justify-between">
                 <div>
                     <div class="bg-blue-50 p-6 flex justify-center">
-                        <img src="{{ asset('icon/akta-kematian.png') }}" alt="Gambar Akta Kematian" class="w-32 h-32 object-contain">
+                        <img src="{{ asset('icon/akta-kematian.webp') }}" alt="Gambar Akta Kematian" class="w-32 h-32 object-contain">
                     </div>
                     <div class="p-6">
                         <h2 class="text-xl font-bold text-gray-900 mb-2">Akta Kematian</h2>
@@ -388,7 +385,7 @@
                                         </div>
                                     </div>
                                     `,
-                                    '/form_pengajuan?keterangan=AMT&judul=Akta%20Kematian&icon=akta-kematian.png',
+                                    '/form_pengajuan?keterangan=AMT&judul=Akta%20Kematian&icon=akta-kematian.webp',
                                     '/login',
                                     '/register'
                                 )"
@@ -424,7 +421,7 @@
             <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-500 ease-out border-2 border-transparent hover:shadow-xl hover:scale-[1.02] hover:border-blue-500 h-full flex flex-col justify-between">
                 <div>
                     <div class="bg-blue-50 p-6 flex justify-center">
-                        <img src="{{ asset('icon/kedatangan.png') }}" alt="Gambar Pindah Datang" class="w-32 h-32 object-contain">
+                        <img src="{{ asset('icon/kedatangan.webp') }}" alt="Gambar Pindah Datang" class="w-32 h-32 object-contain">
                     </div>
                     <div class="p-6">
                         <h2 class="text-xl font-bold text-gray-900 mb-2">Pindah Datang</h2>
@@ -498,7 +495,7 @@
                                         </div>
                                     </div>
                                     `,
-                                    '/form_pengajuan?keterangan=DTG&judul=Lapor%20Kedatangan&icon=kedatangan.png',
+                                    '/form_pengajuan?keterangan=DTG&judul=Lapor%20Kedatangan&icon=kedatangan.webp',
                                     '/login',
                                     '/register'
                                 )"
@@ -534,7 +531,7 @@
             <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-500 ease-out border-2 border-transparent hover:shadow-xl hover:scale-[1.02] hover:border-blue-500 h-full flex flex-col justify-between">
                 <div>
                     <div class="bg-blue-50 p-6 flex justify-center">
-                        <img src="{{ asset('icon/pindah.png') }}" alt="Gambar Pindah Keluar" class="w-32 h-32 object-contain">
+                        <img src="{{ asset('icon/pindah.webp') }}" alt="Gambar Pindah Keluar" class="w-32 h-32 object-contain">
                     </div>
                     <div class="p-6">
                         <h2 class="text-xl font-bold text-gray-900 mb-2">Pindah Keluar</h2>
@@ -581,7 +578,7 @@
                                         </div>
                                     </div>
                                     `,
-                                    '/form_pengajuan?keterangan=PDH&judul=Lapor%20Perpindahan&icon=pindah.png',
+                                    '/form_pengajuan?keterangan=PDH&judul=Lapor%20Perpindahan&icon=pindah.webp',
                                     '/login',
                                     '/register'
                                 )"
@@ -617,7 +614,7 @@
             <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-500 ease-out border-2 border-transparent hover:shadow-xl hover:scale-[1.02] hover:border-blue-500 h-full flex flex-col justify-between">
                 <div>
                     <div class="bg-blue-50 p-6 flex justify-center">
-                        <img src="{{ asset('icon/perkawinan.png') }}" alt="Gambar Akta Perkawinan" class="w-32 h-32 object-contain">
+                        <img src="{{ asset('icon/perkawinan.webp') }}" alt="Gambar Akta Perkawinan" class="w-32 h-32 object-contain">
                     </div>
                     <div class="p-6">
                         <h2 class="text-xl font-bold text-gray-900 mb-2">Akta Perkawinan</h2>
@@ -660,7 +657,7 @@
                                         </div>
                                     </div>
                                     `,
-                                    '/form_pengajuan?keterangan=AKW&judul=Akta%20Perkawinan&icon=perkawinan.png',
+                                    '/form_pengajuan?keterangan=AKW&judul=Akta%20Perkawinan&icon=perkawinan.webp',
                                     '/login',
                                     '/register'
                                 )"
@@ -696,7 +693,7 @@
             <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-500 ease-out border-2 border-transparent hover:shadow-xl hover:scale-[1.02] hover:border-blue-500 h-full flex flex-col justify-between">
                 <div>
                     <div class="bg-blue-50 p-6 flex justify-center">
-                        <img src="{{ asset('icon/perceraian.png') }}" alt="Gambar Akta Perceraian" class="w-32 h-32 object-contain">
+                        <img src="{{ asset('icon/perceraian.webp') }}" alt="Gambar Akta Perceraian" class="w-32 h-32 object-contain">
                     </div>
                     <div class="p-6">
                         <h2 class="text-xl font-bold text-gray-900 mb-2">Akta Perceraian</h2>
@@ -741,7 +738,7 @@
                                         </div>
                                     </div>
                                     `,
-                                    '/form_pengajuan?keterangan=ACR&judul=Akta%20Perceraian&icon=perceraian.png',
+                                    '/form_pengajuan?keterangan=ACR&judul=Akta%20Perceraian&icon=perceraian.webp',
                                     '/login',
                                     '/register'
                                 )"

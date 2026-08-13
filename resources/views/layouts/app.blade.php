@@ -18,11 +18,20 @@
     <link rel="apple-touch-icon" href="{{ asset('icon/logo4_192.png') }}?v=5">
     <meta name="theme-color" content="#3b82f6">
 
+    <!-- WCAG Standard Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <script src="https://cdn.tailwindcss.com"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.5/css/lightbox.min.css" integrity="sha512-xtV3HfYNbQXS/1R1jP53KbFcU9WXiSA1RFKzl5hRlJgdOJm4OxHCWYpskm6lN0xp0XtKGpAfVShpbvlFH3MDAA==" crossorigin="anonymous" referrerpolicy="no-refer rer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12.0.3/swiper-bundle.min.css" />
     <style>
+        /* WCAG Standard Font Stack */
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
         /* Pastikan container swiper tidak overflow */
         .swiper {
             width: 100%;
@@ -80,7 +89,7 @@
     @stack('styles')
 </head>
 
-<body class="bg-cover bg-center bg-fixed" style="background-image: url('{{ asset('images/bg.jpg') }}');">
+<body class="bg-cover bg-center bg-fixed" style="background-image: url('{{ asset('images/bg.webp') }}');">
     <div class="min-h-screen">
         @yield('content')
     </div>
