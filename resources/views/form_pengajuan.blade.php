@@ -723,6 +723,12 @@ document.addEventListener('alpine:init', () => {
                     <p class="font-bold mb-2 text-gray-800">Persyaratan / Formulir yang dibutuhkan:</p>
                     <ul class="list-decimal pl-5 space-y-2 text-gray-600 text-xs sm:text-sm font-semibold mb-4">
                         <li>
+                            Formulir F.1-02 (Pendaftaran Peristiwa Kependudukan) <span class="text-red-500 font-bold">*</span>
+                            <a href="/formulir/download/981444167735976.pdf" class="ml-1 px-2 py-0.5 text-[10px] bg-blue-50 text-blue-600 border border-blue-200 rounded hover:bg-blue-100 transition inline-flex items-center gap-0.5" target="_blank">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-width="2" stroke-linecap="round"/></svg> Unduh
+                            </a>
+                        </li>
+                        <li>
                             Formulir F.1-03 (Formulir Pindah Warga Negara Indonesia) 2 (dua)Lembar jika pasangan suami-istri <span class="text-red-500 font-bold">*</span>
                             <a href="/formulir/download/631669847402004.pdf" class="ml-1 px-2 py-0.5 text-[10px] bg-blue-50 text-blue-600 border border-blue-200 rounded hover:bg-blue-100 transition inline-flex items-center gap-0.5" target="_blank">
                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-width="2" stroke-linecap="round"/></svg> Unduh
@@ -752,6 +758,18 @@ document.addEventListener('alpine:init', () => {
                         </li>
                         <li>Surat Keterangan Pindah WNI (SKPWNI) Asli dari daerah asal <span class="text-red-500 font-bold">*</span></li>
                         <li>KTP-el Asli <span class="text-red-500 font-bold">*</span></li>
+                        <li>
+                            Formulir F-1.03B (jika menumpang KK) <span class="text-red-500 font-bold">*</span>
+                            <a href="/formulir/download/F-1.03B.pdf" class="ml-1 px-2 py-0.5 text-[10px] bg-blue-50 text-blue-600 border border-blue-200 rounded hover:bg-blue-100 transition inline-flex items-center gap-0.5" target="_blank">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-width="2" stroke-linecap="round"/></svg> Unduh
+                            </a>
+                        </li>
+                        <li>
+                            Formulir F-1.03C (jika tempat tinggal sewa/kos) <span class="text-red-500 font-bold">*</span>
+                            <a href="/formulir/download/F-1.03C.pdf" class="ml-1 px-2 py-0.5 text-[10px] bg-blue-50 text-blue-600 border border-blue-200 rounded hover:bg-blue-100 transition inline-flex items-center gap-0.5" target="_blank">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-width="2" stroke-linecap="round"/></svg> Unduh
+                            </a>
+                        </li>
                     </ul>
                     <p class="font-bold mb-2 text-gray-800 border-t pt-2.5">Output:</p>
                     <ul class="list-decimal pl-5 space-y-1.5 text-gray-600 text-xs sm:text-sm font-semibold mb-3">
@@ -895,8 +913,8 @@ document.addEventListener('alpine:init', () => {
             if (key.includes('keluarga') || key.includes('kk')) return this.layananMeta['kartu keluarga'];
             if (key.includes('ktp')) return this.layananMeta['ktp'];
             if (key.includes('kia')) return this.layananMeta['kia'];
-            if (key.includes('pindah')) return this.layananMeta['pindah'];
             if (key.includes('datang')) return this.layananMeta['datang'];
+            if (key.includes('pindah')) return this.layananMeta['pindah'];
             if (key.includes('kelahiran')) return this.layananMeta['kelahiran'];
             if (key.includes('kematian')) return this.layananMeta['kematian'];
             if (key.includes('perkawinan')) return this.layananMeta['perkawinan'];
