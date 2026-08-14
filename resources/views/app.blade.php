@@ -9,14 +9,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp" rel="stylesheet" />
     <title>Pondok Dukcapil Tapin</title>
-    <link rel="icon" type="image/png" href="{{ asset('icon/logo4_192.png') }}?v=5">
+    <link rel="icon" type="image/png" href="{{ asset('icon/logo4_192.webp') }}?v=5">
     
     <!-- PWA Settings -->
     <link rel="manifest" href="{{ asset('manifest.json') }}?v=5">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="{{ asset('icon/logo4_192.png') }}?v=5">
+    <link rel="apple-touch-icon" href="{{ asset('icon/logo4_192.webp') }}?v=5">
     <meta name="theme-color" content="#3b82f6">
 
     <script src="https://cdn.tailwindcss.com"></script>

@@ -6,7 +6,7 @@
         
         <div class="text-center mb-6">
             <div class="w-24 h-24 mx-auto mb-4">
-                <img src="{{ asset('icon/login5.png') }}" alt="Ikon Aktivasi Akun" class="w-full h-full object-contain">
+                <img src="{{ asset('icon/login5.webp') }}" alt="Ikon Aktivasi Akun" class="w-full h-full object-contain">
             </div>
             <h2 class="text-3xl font-bold text-gray-800 text-center mb-2">Aktivasi Akun</h2>
             <p class="text-sm text-gray-700">Masukkan NIK dan kode OTP 6-digit yang dikirimkan ke nomor WhatsApp Anda.</p>

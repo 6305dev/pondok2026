@@ -5,7 +5,7 @@
     <div class="w-full max-w-sm bg-white/30 backdrop-blur-sm rounded-xl shadow-xl p-8 transform transition-transform duration-300">
         <div class="text-center mb-6">
             <div class="w-24 h-24 mx-auto mb-4">
-                <img src="{{ asset('icon/login5.png') }}" alt="Ikon Layanan Online" class="w-full h-full object-contain" id="service-icon">
+                <img src="{{ asset('icon/login5.webp') }}" alt="Ikon Layanan Online" class="w-full h-full object-contain" id="service-icon">
             </div>
             <h2 class="text-3xl font-bold text-gray-800 text-center mb-2">Login</h2>
         </div>

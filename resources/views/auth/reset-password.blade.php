@@ -8,7 +8,7 @@
         <div class="text-center mb-6">
             <div class="w-24 h-24 mx-auto mb-4">
                 {{-- Menggunakan ikon yang sama dengan login --}}
-                <img src="{{ asset('icon/user2.png') }}" alt="Ikon Reset Password" class="w-full h-full object-contain">
+                <img src="{{ asset('icon/user2.webp') }}" alt="Ikon Reset Password" class="w-full h-full object-contain">
             </div>
             <h2 class="text-3xl font-bold text-gray-800 text-center mb-2">Buat Password Baru</h2>
             <p class="text-sm text-gray-700">Buat password/sandi dengan kombinasi hurup dan angka, jangan kurang dari 8 karakter.</p>
