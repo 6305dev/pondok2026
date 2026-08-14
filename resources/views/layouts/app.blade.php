@@ -33,7 +33,7 @@
         .swiper-slide {
             text-align: center;
             font-size: 18px;
-            background: #fff;
+            background: transparent;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -47,7 +47,7 @@
         .swiper-slide img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
             /* Penting: agar gambar tidak stretch */
             display: block;
         }

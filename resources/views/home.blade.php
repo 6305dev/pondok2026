@@ -3,7 +3,7 @@
 
 <!-- Header Navbar Full Width & Sticky -->
 <!-- Header Navbar Full Width & Sticky -->
-<header role="banner" class="top-0 z-50 w-full bg-white/90 backdrop-blur-md shadow-md border-b border-gray-200/50 px-4 md:px-8 py-3">
+<header role="banner" class="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md shadow-md border-b border-gray-200/50 px-4 md:px-8 py-3">
     <div class="max-w-6xl mx-auto flex items-center justify-between">
         <!-- Logo & Brand (Kiri) -->
         <div class="flex items-center space-x-3">
@@ -28,12 +28,12 @@
 
     @if(isset($slides) && $slides->count() > 0)
     <section aria-label="Galeri Informasi" class="mb-6">
-        <div class="swiper mySwiper rounded-lg shadow-xl">
+        <div class="swiper mySwiper rounded-2xl shadow-xl overflow-hidden">
             <div class="swiper-wrapper">
                 @foreach($slides as $slide)
                 <div class="swiper-slide flex justify-center">
-                    <a href="{{ asset('images/' . $slide->filename) }}" data-src="{{ asset('images/' . $slide->filename) }}" aria-label="Lihat foto {{ $slide->judul }}" class="lightbox-link relative w-full h-full block overflow-hidden rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-600">
-                        <img src="{{ asset('images/' . $slide->filename) }}" class="w-full h-full object-cover rounded-2xl" alt="{{ $slide->judul ?? 'Informasi Disdukcapil Tapin' }}">
+                    <a href="{{ asset('images/' . $slide->filename) }}" data-src="{{ asset('images/' . $slide->filename) }}" aria-label="Lihat foto {{ $slide->judul }}" class="lightbox-link relative w-full h-full block focus:outline-none focus:ring-2 focus:ring-blue-600">
+                        <img src="{{ asset('images/' . $slide->filename) }}" class="w-full h-full object-cover" alt="{{ $slide->judul ?? 'Informasi Disdukcapil Tapin' }}" onerror="this.closest('.swiper-slide').remove(); if(typeof swiper !== 'undefined') swiper.update();">
                     </a>
                 </div>
                 @endforeach
@@ -43,58 +43,65 @@
     </section>
     @endif
 
-    <section aria-label="Menu Utama Layanan" class="mt-6 bg-white/70 backdrop-blur-md rounded-2xl shadow-xl p-4 md:p-6">
+    <section aria-label="Menu Utama Layanan" class="mt-6 bg-white/20 backdrop-blur-sm rounded-2xl shadow-sm border border-white/20 p-4 md:p-6">
         <h2 class="sr-only">Menu Utama Layanan</h2>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
             {{-- Layanan Online --}}
-            <a href="{{ route('layanan.index') }}" id="layanan-online-link" class="flex flex-col items-center justify-center p-4 bg-white/80 rounded-xl shadow hover:shadow-md transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
+            <a href="{{ route('layanan.index') }}" id="layanan-online-link" class="flex flex-col items-center justify-center p-4 bg-white/70 rounded-xl shadow hover:shadow-sm transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
                 <img src="{{ asset('icon/online2.png') }}" alt="" aria-hidden="true" class="h-12 w-12 md:h-14 md:w-14 object-contain mb-2">
                 <span class="text-sm font-bold text-center text-gray-900">Layanan</span>
+                <p class="text-gray-500 text-sm mb-1 text-center">Pengajuan Permohonan</p>
             </a>
 
             {{-- Formulir --}}
-            <a href="/formulir" class="flex flex-col items-center justify-center p-4 bg-white/80 rounded-xl shadow hover:shadow-md transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
+            <a href="/formulir" class="flex flex-col items-center justify-center p-4 bg-white/70 rounded-xl shadow hover:shadow-sm transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
                 <img src="{{ asset('icon/formulir.png') }}" alt="" aria-hidden="true" class="h-12 w-12 md:h-14 md:w-14 object-contain mb-2">
                 <span class="text-sm font-bold text-center text-gray-900">Formulir</span>
+                <p class="text-gray-500 text-sm mb-1 text-center">Formulir Layanan</p>
             </a>
 
             {{-- Persyaratan --}}
-            <a href="/persyaratan" class="flex flex-col items-center justify-center p-4 bg-white/80 rounded-xl shadow hover:shadow-md transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
+            <a href="/persyaratan" class="flex flex-col items-center justify-center p-4 bg-white/70 rounded-xl shadow hover:shadow-sm transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
                 <img src="{{ asset('icon/syarat1.png') }}" alt="" aria-hidden="true" class="h-12 w-12 md:h-14 md:w-14 object-contain mb-2">
                 <span class="text-sm font-bold text-center text-gray-900">Persyaratan</span>
+                <p class="text-gray-500 text-sm mb-1 text-center">Syarat dan Ketentuan</p>
             </a>
 
             {{-- Tutorial --}}
-            <button id="tutorial-btn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="video-modal" class="flex flex-col items-center justify-center p-4 bg-white/80 rounded-xl shadow hover:shadow-md transform transition duration-200 hover:scale-105 hover:bg-blue-50 w-full focus:outline-none focus:ring-2 focus:ring-blue-600">
+            <button id="tutorial-btn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="video-modal" class="flex flex-col items-center justify-center p-4 bg-white/70 rounded-xl shadow hover:shadow-sm transform transition duration-200 hover:scale-105 hover:bg-blue-50 w-full focus:outline-none focus:ring-2 focus:ring-blue-600">
                 <img src="{{ asset('icon/Tutorial1.png') }}" alt="" aria-hidden="true" class="h-12 w-12 md:h-14 md:w-14 object-contain mb-2">
                 <span class="text-sm font-bold text-center text-gray-900">Tutorial</span>
+                <p class="text-gray-500 text-sm mb-1 text-center">Video Penggunaan</p>
             </button>
 
             {{-- SKM --}}
-            <a href="https://skm.go.id/share/instansi/98445cc2-e8f5-445f-b27d-036005f06e3d/1" target="_blank" rel="noopener noreferrer" aria-label="Survei Kepuasan Masyarakat (SKM) - Buka di tab baru" class="flex flex-col items-center justify-center p-4 bg-white/80 rounded-xl shadow hover:shadow-md transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
+            <a href="https://skm.go.id/share/instansi/98445cc2-e8f5-445f-b27d-036005f06e3d/1" target="_blank" rel="noopener noreferrer" aria-label="Survei Kepuasan Masyarakat (SKM) - Buka di tab baru" class="flex flex-col items-center justify-center p-4 bg-white/70 rounded-xl shadow hover:shadow-sm transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
                 <img src="{{ asset('icon/konsultasi.png') }}" alt="" aria-hidden="true" class="h-12 w-12 md:h-14 md:w-14 object-contain mb-2">
                 <span class="text-sm font-bold text-center text-gray-900">SKM</span>
+                <p class="text-gray-500 text-sm mb-1 text-center">Penilaian</p>
             </a>
 
             {{-- Login / Logout --}}
             @auth
-            <a href="{{ route('logout') }}" aria-label="Keluar Akun" class="flex flex-col items-center justify-center p-4 bg-white/80 rounded-xl shadow hover:shadow-md transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <a href="{{ route('logout') }}" aria-label="Keluar Akun" class="flex flex-col items-center justify-center p-4 bg-white/70 rounded-xl shadow hover:shadow-sm transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <img src="{{ asset('icon/Logout1.png') }}" alt="" aria-hidden="true" class="h-12 w-12 md:h-14 md:w-14 object-contain mb-2">
                 <span class="text-sm font-bold text-center text-gray-900">Logout</span>
+                <p class="text-gray-500 text-sm mb-1 text-center">Masuk/Daftar</p>
             </a>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>
             @else
-            <a href="{{ route('login') }}" aria-label="Masuk Akun" class="flex flex-col items-center justify-center p-4 bg-white/80 rounded-xl shadow hover:shadow-md transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
+            <a href="{{ route('login') }}" aria-label="Masuk Akun" class="flex flex-col items-center justify-center p-4 bg-white/70 rounded-xl shadow hover:shadow-sm transform transition duration-200 hover:scale-105 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
                 <img src="{{ asset('icon/login.png') }}" alt="" aria-hidden="true" class="h-12 w-12 md:h-14 md:w-14 object-contain mb-2">
                 <span class="text-sm font-bold text-center text-gray-900">Login</span>
+                <p class="text-gray-500 text-sm mb-1 text-center">Masuk/Daftar</p>
             </a>
             @endauth
         </div>
     </section>
 
-    <section aria-label="Identitas Instansi" class="mt-6 text-center bg-white/70 backdrop-blur-md rounded-2xl shadow-lg p-5 md:p-8 border border-white/60">
+    <section aria-label="Identitas Instansi" class="mt-6 text-center p-5 md:p-8">
         <style>
             .merah {
                 color: #1d4ed8; /* WCAG compliant blue contrast >= 4.5:1 */
