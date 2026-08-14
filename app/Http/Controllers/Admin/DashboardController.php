@@ -7,6 +7,7 @@ use App\Models\Transaksi;
 use App\Models\JenisPelayanan; // ⬅️ DITAMBAH: Pastikan Model JenisPelayanan di-import
 use Illuminate\Http\Request;
 use Carbon\Carbon; // ⬅️ DITAMBAH: Gunakan alias untuk Carbon
+use App\Helpers\WhatsAppHelper;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -369,11 +370,6 @@ class DashboardController extends \App\Http\Controllers\Controller
             return;
         }
 
-        $phone = preg_replace('/[^0-9]/', '', $user->phone);
-        if (str_starts_with($phone, '0')) {
-            $phone = '62' . substr($phone, 1);
-        }
-
         $namaDokumen = $transaksi->dokumen ? $transaksi->dokumen->nama : 'Dokumen';
         $idTrx = $transaksi->id_trx;
 
@@ -396,24 +392,7 @@ class DashboardController extends \App\Http\Controllers\Controller
             return;
         }
 
-        try {
-            Log::info('Mengirim notifikasi status WA ke: ' . $phone . ' Status: ' . $status);
-            $response = Http::withHeaders([
-                'x-api-key' => config('services.whatsapp.token'),
-            ])->post(config('services.whatsapp.url'), [
-                'number'  => $phone,
-                'message' => $message,
-                'referal' => config('services.whatsapp.referal'),
-            ]);
-
-            if ($response->successful()) {
-                Log::info('Notifikasi status WA terkirim sukses (200): ' . $response->body());
-            } else {
-                Log::error('Gagal kirim notifikasi status WA. Status: ' . $response->status() . ' Respon: ' . $response->body());
-            }
-        } catch (\Exception $e) {
-            Log::error('Gagal mengirim notifikasi status WA (Exception): ' . $e->getMessage());
-        }
+        WhatsAppHelper::sendMessage($user->phone, $message);
     }
 
     /**

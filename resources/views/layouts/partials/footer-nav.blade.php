@@ -44,7 +44,7 @@
             overflow-hidden
             z-20
         " aria-label="Beranda Utama">
-            <img src="{{ asset('icon/logo4.png') }}" alt="Logo" class="w-full h-full object-cover">
+            <img src="{{ asset('icon/logo4.webp') }}" alt="Logo" class="w-full h-full object-cover">
         </a>
 
         {{-- Tautan Pesan --}}

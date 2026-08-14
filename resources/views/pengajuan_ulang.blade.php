@@ -348,7 +348,6 @@
                 </div>
             </div>
         </div>
-        <p class="text-center text-gray-700 font-semibold text-xs mt-6">© {{ date('Y') }} Pondok Dukcapil - Layanan Online</p>
     </div>
 
     <span x-effect="
