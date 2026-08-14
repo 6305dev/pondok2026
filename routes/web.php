@@ -63,6 +63,12 @@ Route::get('/activate/link/{nik}/{otp}', [\App\Http\Controllers\Auth\ActivationC
 Route::get('/desa', [LocationController::class, 'getDesa'])->name('get.desa');
 Route::get('/layanan', [LayananController::class, 'index'])->name('layanan.index');
 Route::post('/cek-status', [TransaksiController::class, 'cekStatus'])->name('cek.status');
+Route::get('/api/persyaratan-umum', [PengajuanController::class, 'getPersyaratanUmum'])->name('api.persyaratan.umum');
+Route::get('/api/formulir-aktif', function() {
+    return response()->json(
+        \App\Models\Formulir::where('aktif', 'Y')->get(['jenis_formulir', 'ket', 'dokumen'])
+    );
+})->name('api.formulir.aktif');
 
 // === 2. ROUTE YANG DILINDUNGI JADWAL ===
 // Homepage
@@ -80,7 +86,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/pengajuan/submit', [PengajuanController::class, 'submitForm'])->name('pengajuan.submit');
     Route::get('/api/jenis-layanan/filter/{keterangan}', [PengajuanController::class, 'getJenisLayananByKeterangan']);
     Route::get('/api/pengambilan-dokumen', [PengajuanController::class, 'getPengambilanDokumen'])->name('api.pengambilan.dokumen');
-    Route::get('/api/persyaratan-umum', [PengajuanController::class, 'getPersyaratanUmum'])->name('api.persyaratan.umum');
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
     Route::post('/transaksi/{id_trx}/update-status', [TransaksiController::class, 'updateStatus'])->name('transaksi.updateStatus');
     Route::get('/tracking', [TrackingController::class, 'index'])->name('tracking.index');

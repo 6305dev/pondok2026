@@ -2,14 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JenisPelayanan;
+use App\Models\PersyaratanUmum;
 use Illuminate\Http\Request;
 
 class PersyaratanController extends Controller
 {
+    public function __construct()
+    {
+        // Pastikan kolom deskripsi_output ada di database
+        if (\Illuminate\Support\Facades\Schema::hasTable('persyaratan_umum')) {
+            if (!\Illuminate\Support\Facades\Schema::hasColumn('persyaratan_umum', 'deskripsi_output')) {
+                \Illuminate\Support\Facades\Schema::table('persyaratan_umum', function ($table) {
+                    $table->text('deskripsi_output')->nullable();
+                });
+            }
+        }
+    }
+
     public function index()
     {
-        $jenisPelayanan = JenisPelayanan::all();
+        $persyaratans = PersyaratanUmum::orderBy('id', 'asc')->get();
 
         // Mapping nama lengkap dan ikon SVG
         $namaLengkapMap = [
@@ -51,25 +63,38 @@ class PersyaratanController extends Controller
             ],
         ];
 
-        // Kelompokkan data
-        $grouped = $jenisPelayanan->groupBy('keterangan');
-
-        foreach ($grouped as $keterangan => $items) {
-            foreach ($items as $item) {
-                $lines = preg_split('/\r\n|\r|\n/', $item->persyaratan);
-                $item->persyaratan_items = array_filter(array_map('trim', $lines));
+        // Memetakan ke key map agar mendapat ikon dan penulisan nama lengkap yang sama
+        foreach ($persyaratans as $item) {
+            $key = '';
+            if (stripos($item->layanan, 'keluarga') !== false || stripos($item->layanan, 'kk') !== false) {
+                $key = 'KK';
+            } elseif (stripos($item->layanan, 'tanda penduduk') !== false || stripos($item->layanan, 'ktp') !== false) {
+                $key = 'KTP';
+            } elseif (stripos($item->layanan, 'anak') !== false || stripos($item->layanan, 'kia') !== false) {
+                $key = 'KIA';
+            } elseif (stripos($item->layanan, 'datang') !== false || stripos($item->layanan, 'kedatangan') !== false) {
+                $key = 'DTG';
+            } elseif (stripos($item->layanan, 'pindah') !== false || stripos($item->layanan, 'perpindahan') !== false) {
+                $key = 'PDH';
+            } elseif (stripos($item->layanan, 'kelahiran') !== false) {
+                $key = 'ALH';
+            } elseif (stripos($item->layanan, 'kematian') !== false) {
+                $key = 'AMT';
+            } elseif (stripos($item->layanan, 'perkawinan') !== false) {
+                $key = 'AKW';
+            } elseif (stripos($item->layanan, 'perceraian') !== false) {
+                $key = 'ACR';
             }
 
-            // Tambahkan nama lengkap & ikon ke grup
-            if (isset($namaLengkapMap[$keterangan])) {
-                $grouped[$keterangan]->nama_lengkap = $namaLengkapMap[$keterangan]['nama'];
-                $grouped[$keterangan]->icon_svg = $namaLengkapMap[$keterangan]['icon'];
+            if ($key && isset($namaLengkapMap[$key])) {
+                $item->nama_lengkap = $namaLengkapMap[$key]['nama'];
+                $item->icon_svg = $namaLengkapMap[$key]['icon'];
             } else {
-                $grouped[$keterangan]->nama_lengkap = $keterangan;
-                $grouped[$keterangan]->icon_svg = '<svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 14h.01M18 14h.01M15 11h3M12 11h.01M9 11h.01M7 21h10v-2a3 3 0 005.356-2.674M6.644 19.674A3 3 0 0012 22c1.357 0 2.57-.683 3.356-1.834M15 11h3M12 11h.01M9 11h.01M7 21h10v-2a3 3 0 005.356-2.674M6.644 19.674A3 3 0 0012 22c1.357 0 2.57-.683 3.356-1.834"></path></svg>';
+                $item->nama_lengkap = $item->layanan;
+                $item->icon_svg = '<svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>';
             }
         }
 
-        return view('persyaratan', compact('grouped'));
+        return view('persyaratan', compact('persyaratans'));
     }
 }

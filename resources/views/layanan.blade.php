@@ -1233,6 +1233,80 @@ function cekStatusTransaksi() {
         });
     });
 }
+
+// Fetch dynamic requirements and active download forms from database
+Promise.all([
+    fetch('/api/persyaratan-umum').then(r => r.json()),
+    fetch('/api/formulir-aktif').then(r => r.json())
+]).then(([persyaratan, formulirList]) => {
+    const mapKey = (name) => {
+        const k = String(name).toLowerCase();
+        if (k.includes('keluarga') || k.includes('kk')) return 'kartu keluarga';
+        if (k.includes('ktp') || k.includes('tanda penduduk')) return 'ktp';
+        if (k.includes('kia') || k.includes('identitas anak')) return 'kia';
+        if (k.includes('datang') || k.includes('kedatangan')) return 'datang';
+        if (k.includes('pindah') || k.includes('perpindahan')) return 'pindah';
+        if (k.includes('kelahiran')) return 'kelahiran';
+        if (k.includes('kematian')) return 'kematian';
+        if (k.includes('perkawinan')) return 'perkawinan';
+        if (k.includes('perceraian')) return 'perceraian';
+        return null;
+    };
+    
+    const convertToHtml = (syaratText, outputText) => {
+        if (!syaratText) return '<p class="text-gray-500">Tidak ada persyaratan khusus.</p>';
+        const lines = syaratText.split(/\r?\n/).map(l => l.trim()).filter(l => l !== '');
+        let html = '<p class="font-bold mb-2 text-gray-900">Persyaratan / Formulir yang dibutuhkan:</p>';
+        html += '<ul class="list-decimal pl-5 space-y-2 text-gray-800 text-xs sm:text-sm font-semibold mb-4">';
+        
+        lines.forEach(line => {
+            let cleaned = line.replace(/^\d+\.\s*/, '');
+            
+            // Match any active formulir name in the line and insert the download button (only if not already containing a download link)
+            if (!cleaned.includes('/formulir/download/')) {
+                formulirList.forEach(f => {
+                    const escapedName = f.jenis_formulir.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                    const flexiblePattern = escapedName.replace(/\\\.|\-/g, '[.\\-\\s]?');
+                    const regex = new RegExp(`(${flexiblePattern}(?:\\s+\\([^)]+\\))?)`, 'gi');
+                    if (regex.test(cleaned)) {
+                        const downloadUrl = `/formulir/download/${f.dokumen}`;
+                        cleaned = cleaned.replace(regex, `$1 <a href="${downloadUrl}" class="ml-1 px-2 py-0.5 text-[10px] bg-blue-100 text-blue-900 border border-blue-300 rounded hover:bg-blue-200 transition inline-flex items-center gap-0.5 focus:outline-none focus:ring-2 focus:ring-blue-600" target="_blank" rel="noopener noreferrer" aria-label="Unduh ${f.jenis_formulir}"><svg aria-hidden="true" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-width="2" stroke-linecap="round"/></svg> Unduh</a>`);
+                    }
+                });
+            }
+            
+            const highlighted = cleaned.replace(/\*/g, ' <span class="text-red-700 font-bold">*</span>');
+            html += `<li>${highlighted}</li>`;
+        });
+        
+        html += '</ul>';
+
+        // Render Output section if outputText exists
+        if (outputText && outputText.trim() !== '') {
+            const outLines = outputText.split(/\r?\n/).map(l => l.trim()).filter(l => l !== '');
+            if (outLines.length > 0) {
+                html += '<p class="font-bold mb-2 text-gray-900 border-t pt-2.5">Output:</p>';
+                html += '<ul class="list-decimal pl-5 space-y-1.5 text-gray-800 text-xs sm:text-sm font-semibold mb-3">';
+                outLines.forEach(line => {
+                    let cleaned = line.replace(/^\d+\.\s*/, '');
+                    const highlighted = cleaned.replace(/\*/g, ' <span class="text-red-700 font-bold">*</span>');
+                    html += `<li>${highlighted}</li>`;
+                });
+                html += '</ul>';
+            }
+        }
+        
+        html += '<p class="text-[11px] text-red-700 font-bold border-t pt-2 mt-1">Tanda (*) menunjukkan dokumen/formulir yang wajib dilengkapi.</p>';
+        return html;
+    };
+    
+    persyaratan.forEach(item => {
+        const key = mapKey(item.layanan);
+        if (key && layananMeta[key]) {
+            layananMeta[key].deskripsi = convertToHtml(item.deskripsi_syarat, item.deskripsi_output);
+        }
+    });
+}).catch(err => console.error('Gagal load persyaratan dinamis:', err));
 </script>
 
 <style>

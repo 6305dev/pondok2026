@@ -335,11 +335,19 @@ class PengajuanController extends Controller
                 $table->increments('id');
                 $table->string('layanan');
                 $table->text('deskripsi_syarat')->nullable();
+                $table->text('deskripsi_output')->nullable();
                 $table->timestamps();
             });
         }
 
-        // 2. Cek apakah seeder sudah pernah jalan (jumlah baris > 0)
+        // 2. Tambah kolom jika belum ada (antisipasi tabel sudah ada)
+        if (!\Illuminate\Support\Facades\Schema::hasColumn('persyaratan_umum', 'deskripsi_output')) {
+            \Illuminate\Support\Facades\Schema::table('persyaratan_umum', function ($table) {
+                $table->text('deskripsi_output')->nullable();
+            });
+        }
+
+        // 3. Cek apakah seeder sudah pernah jalan (jumlah baris > 0)
         $count = DB::table('persyaratan_umum')->count();
         if ($count === 0) {
             $initialData = [
@@ -347,6 +355,7 @@ class PengajuanController extends Controller
                     'id' => 1,
                     'layanan' => 'Kartu Keluarga',
                     'deskripsi_syarat' => "1. KK Lama/Rusak (Untuk Perubahan Data)\n2. Buku Nikah / Kutipan Akta Perkawinan\n3. Surat Keterangan Pindah (Untuk Pendatang)\n4. Dokumen Pendukung Elemen Data (Ijazah, Akta Lahir, dll)",
+                    'deskripsi_output' => "1. Kartu Keluarga (KK) Baru\n2. KTP/KIA jika ada perubahan data dalam Kartu Keluarga",
                     'created_at' => now(),
                     'updated_at' => now()
                 ],
@@ -354,6 +363,7 @@ class PengajuanController extends Controller
                     'id' => 2,
                     'layanan' => 'KTP',
                     'deskripsi_syarat' => "1. Kartu Keluarga (KK)\n2. KTP Lama/Rusak (Untuk Perubahan/Rusak)\n3. Surat Keterangan Hilang Kepolisian (Jika Hilang)\n4. Sudah melakukan perekaman KTP-el",
+                    'deskripsi_output' => "1. KTP-el Baru\n2. Kartu Keluarga (KK) Baru jika ada perubahan data",
                     'created_at' => now(),
                     'updated_at' => now()
                 ],
@@ -361,6 +371,7 @@ class PengajuanController extends Controller
                     'id' => 3,
                     'layanan' => 'KIA',
                     'deskripsi_syarat' => "1. Kartu Keluarga (KK)\n2. Akta Kelahiran Anak\n3. Foto Anak ukuran 3x4 (Untuk anak usia 5-17 tahun)",
+                    'deskripsi_output' => "1. KIA (Kartu Identitas Anak) Baru\n2. Kartu Keluarga (KK) Baru jika ada perubahan data",
                     'created_at' => now(),
                     'updated_at' => now()
                 ],
@@ -368,6 +379,7 @@ class PengajuanController extends Controller
                     'id' => 4,
                     'layanan' => 'Pindah',
                     'deskripsi_syarat' => "1. Kartu Keluarga (KK)\n2. KTP-el Pemohon\n3. Alamat tujuan pindah yang jelas",
+                    'deskripsi_output' => "1. Surat Keterangan Pindah WNI (SKPWNI)\n2. Kartu Keluarga (KK) Baru bagi anggota keluarga yang tinggal",
                     'created_at' => now(),
                     'updated_at' => now()
                 ],
@@ -375,6 +387,7 @@ class PengajuanController extends Controller
                     'id' => 5,
                     'layanan' => 'Datang',
                     'deskripsi_syarat' => "1. Surat Keterangan Pindah WNI (SKPWNI) dari daerah asal\n2. KTP-el daerah asal\n3. Surat Pernyataan Domisili/Menumpang KK",
+                    'deskripsi_output' => "1. Kartu Keluarga (KK) Baru\n2. KTP-el Baru dengan alamat baru\n3. KIA Baru dengan alamat baru",
                     'created_at' => now(),
                     'updated_at' => now()
                 ],
@@ -382,6 +395,7 @@ class PengajuanController extends Controller
                     'id' => 6,
                     'layanan' => 'Akta Kelahiran',
                     'deskripsi_syarat' => "1. Surat Keterangan Lahir dari Bidan/Rumah Sakit\n2. Kartu Keluarga (KK)\n3. Buku Nikah/Kutipan Akta Perkawinan Orang Tua\n4. KTP-el Orang Tua",
+                    'deskripsi_output' => "1. Akta Kelahiran\n2. Kartu Keluarga (KK) Baru dengan penambahan anak\n3. KIA Baru bagi anak baru lahir",
                     'created_at' => now(),
                     'updated_at' => now()
                 ],
@@ -389,6 +403,7 @@ class PengajuanController extends Controller
                     'id' => 7,
                     'layanan' => 'Akta Kematian',
                     'deskripsi_syarat' => "1. Surat Keterangan Kematian dari Dokter/Kepala Desa\n2. Kartu Keluarga (KK) Jenazah\n3. KTP-el Jenazah (Jika ada)\n4. KTP-el Pelapor",
+                    'deskripsi_output' => "1. Akta Kematian\n2. Kartu Keluarga (KK) Baru dengan penghapusan anggota yang meninggal\n3. KTP dengan status Baru bagi suami/istri yang ditinggalkan",
                     'created_at' => now(),
                     'updated_at' => now()
                 ],
@@ -396,6 +411,7 @@ class PengajuanController extends Controller
                     'id' => 8,
                     'layanan' => 'Akta Perkawinan',
                     'deskripsi_syarat' => "1. Surat Keterangan Kawin dari Pemuka Agama\n2. Akta Kelahiran Suami & Istri\n3. Kartu Keluarga (KK) & KTP-el Suami & Istri\n4. Pas Foto Berdampingan",
+                    'deskripsi_output' => "1. Kutipan Akta Perkawinan\n2. Kartu Keluarga (KK) & KTP-el Baru dengan status Kawin",
                     'created_at' => now(),
                     'updated_at' => now()
                 ],
@@ -403,11 +419,34 @@ class PengajuanController extends Controller
                     'id' => 9,
                     'layanan' => 'Akta Perceraian',
                     'deskripsi_syarat' => "1. Putusan Pengadilan Negeri/Kepaniteraan Pengadilan\n2. Akta Perkawinan Asli\n3. Kartu Keluarga (KK) & KTP-el",
+                    'deskripsi_output' => "1. Kutipan Akta Perceraian\n2. Kartu Keluarga (KK) & KTP-el Baru dengan status Cerai Hidup",
                     'created_at' => now(),
                     'updated_at' => now()
                 ],
             ];
             DB::table('persyaratan_umum')->insert($initialData);
+        }
+
+        // 4. Jika kolom deskripsi_output baru ditambahkan dan masih kosong, isi dengan nilai default
+        $countEmpty = DB::table('persyaratan_umum')->whereNull('deskripsi_output')->count();
+        if ($countEmpty > 0) {
+            $defaultOutputs = [
+                1 => "1. Kartu Keluarga (KK) Baru\n2. KTP/KIA jika ada perubahan data dalam Kartu Keluarga",
+                2 => "1. KTP-el Baru\n2. Kartu Keluarga (KK) Baru jika ada perubahan data",
+                3 => "1. KIA (Kartu Identitas Anak) Baru\n2. Kartu Keluarga (KK) Baru jika ada perubahan data",
+                4 => "1. Surat Keterangan Pindah WNI (SKPWNI)\n2. Kartu Keluarga (KK) Baru bagi anggota keluarga yang tinggal",
+                5 => "1. Kartu Keluarga (KK) Baru\n2. KTP-el Baru dengan alamat baru\n3. KIA Baru dengan alamat baru",
+                6 => "1. Akta Kelahiran\n2. Kartu Keluarga (KK) Baru dengan penambahan anak\n3. KIA Baru bagi anak baru lahir",
+                7 => "1. Akta Kematian\n2. Kartu Keluarga (KK) Baru dengan penghapusan anggota yang meninggal\n3. KTP dengan status Baru bagi suami/istri yang ditinggalkan",
+                8 => "1. Kutipan Akta Perkawinan\n2. Kartu Keluarga (KK) & KTP-el Baru dengan status Kawin",
+                9 => "1. Kutipan Akta Perceraian\n2. Kartu Keluarga (KK) & KTP-el Baru dengan status Cerai Hidup"
+            ];
+            foreach ($defaultOutputs as $id => $output) {
+                DB::table('persyaratan_umum')
+                    ->where('id', $id)
+                    ->whereNull('deskripsi_output')
+                    ->update(['deskripsi_output' => $output]);
+            }
         }
     }
 }

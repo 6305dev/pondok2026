@@ -818,6 +818,77 @@ document.addEventListener('alpine:init', () => {
             if (key.includes('kua')) return this.layananMeta['kua'];
             return this.layananMeta['default'];
         },
+        init() {
+            Promise.all([
+                fetch('/api/persyaratan-umum').then(res => res.json()),
+                fetch('/api/formulir-aktif').then(res => res.json())
+            ]).then(([persyaratan, formulirList]) => {
+                persyaratan.forEach(item => {
+                    const key = this.mapLayananKey(item.layanan);
+                    if (key && this.layananMeta[key]) {
+                        this.layananMeta[key].deskripsi = this.convertSyaratToHtml(item.deskripsi_syarat, formulirList, item.deskripsi_output);
+                    }
+                });
+            }).catch(err => console.error('Gagal load persyaratan dinamis:', err));
+        },
+        mapLayananKey(name) {
+            const key = String(name).toLowerCase();
+            if (key.includes('keluarga') || key.includes('kk')) return 'kartu keluarga';
+            if (key.includes('ktp') || key.includes('tanda penduduk')) return 'ktp';
+            if (key.includes('kia') || key.includes('identitas anak')) return 'kia';
+            if (key.includes('datang') || key.includes('kedatangan')) return 'datang';
+            if (key.includes('pindah') || key.includes('perpindahan')) return 'pindah';
+            if (key.includes('kelahiran')) return 'kelahiran';
+            if (key.includes('kematian')) return 'kematian';
+            if (key.includes('perkawinan')) return 'perkawinan';
+            if (key.includes('perceraian')) return 'perceraian';
+            return null;
+        },
+        convertSyaratToHtml(text, formulirList = [], outputText = '') {
+            if (!text) return '<p class="text-gray-500">Tidak ada persyaratan khusus.</p>';
+            const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l !== '');
+            let html = '<p class="font-bold mb-2 text-gray-900">Persyaratan / Formulir yang dibutuhkan:</p>';
+            html += '<ul class="list-decimal pl-5 space-y-2 text-gray-800 text-xs sm:text-sm font-semibold mb-4">';
+            
+            lines.forEach(line => {
+                let cleaned = line.replace(/^\d+\.\s*/, '');
+                
+                if (!cleaned.includes('/formulir/download/')) {
+                    formulirList.forEach(f => {
+                        const escapedName = f.jenis_formulir.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                        const flexiblePattern = escapedName.replace(/\\\.|\-/g, '[.\\-\\s]?');
+                        const regex = new RegExp(`(${flexiblePattern}(?:\\s+\\([^)]+\\))?)`, 'gi');
+                        if (regex.test(cleaned)) {
+                            const downloadUrl = `/formulir/download/${f.dokumen}`;
+                            cleaned = cleaned.replace(regex, `$1 <a href="${downloadUrl}" class="ml-1 px-2 py-0.5 text-[10px] bg-blue-100 text-blue-900 border border-blue-300 rounded hover:bg-blue-200 transition inline-flex items-center gap-0.5 focus:outline-none focus:ring-2 focus:ring-blue-600" target="_blank" rel="noopener noreferrer" aria-label="Unduh ${f.jenis_formulir}"><svg aria-hidden="true" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-width="2" stroke-linecap="round"/></svg> Unduh</a>`);
+                        }
+                    });
+                }
+                
+                const highlighted = cleaned.replace(/\*/g, ' <span class="text-red-700 font-bold">*</span>');
+                html += `<li>${highlighted}</li>`;
+            });
+            
+            html += '</ul>';
+
+            // Render Output section if outputText exists
+            if (outputText && outputText.trim() !== '') {
+                const outLines = outputText.split(/\r?\n/).map(l => l.trim()).filter(l => l !== '');
+                if (outLines.length > 0) {
+                    html += '<p class="font-bold mb-2 text-gray-900 border-t pt-2.5">Output:</p>';
+                    html += '<ul class="list-decimal pl-5 space-y-1.5 text-gray-800 text-xs sm:text-sm font-semibold mb-3">';
+                    outLines.forEach(line => {
+                        let cleaned = line.replace(/^\d+\.\s*/, '');
+                        const highlighted = cleaned.replace(/\*/g, ' <span class="text-red-700 font-bold">*</span>');
+                        html += `<li>${highlighted}</li>`;
+                    });
+                    html += '</ul>';
+                }
+            }
+
+            html += '<p class="text-[11px] text-red-700 font-bold border-t pt-2 mt-1">Tanda (*) menunjukkan dokumen/formulir yang wajib dilengkapi.</p>';
+            return html;
+        },
         showLayananInfo(nama) {
             const meta = this.getMeta(nama);
             Swal.fire({

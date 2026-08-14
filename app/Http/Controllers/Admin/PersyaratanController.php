@@ -11,6 +11,15 @@ class PersyaratanController extends Controller
     public function __construct()
     {
         $this->middleware('admin.only'); // proteksi ketat admin saja
+
+        // Pastikan kolom deskripsi_output ada di database
+        if (\Illuminate\Support\Facades\Schema::hasTable('persyaratan_umum')) {
+            if (!\Illuminate\Support\Facades\Schema::hasColumn('persyaratan_umum', 'deskripsi_output')) {
+                \Illuminate\Support\Facades\Schema::table('persyaratan_umum', function ($table) {
+                    $table->text('deskripsi_output')->nullable();
+                });
+            }
+        }
     }
 
     /**
@@ -27,7 +36,8 @@ class PersyaratanController extends Controller
      */
     public function create()
     {
-        return view('admin.persyaratan.create');
+        $formulirs = \App\Models\Formulir::where('aktif', 'Y')->orderBy('jenis_formulir')->get();
+        return view('admin.persyaratan.create', compact('formulirs'));
     }
 
     /**
@@ -38,9 +48,10 @@ class PersyaratanController extends Controller
         $request->validate([
             'layanan'           => 'required|string|max:100|unique:persyaratan_umum',
             'deskripsi_syarat'  => 'required|string',
+            'deskripsi_output'  => 'nullable|string',
         ]);
 
-        PersyaratanUmum::create($request->only(['layanan', 'deskripsi_syarat']));
+        PersyaratanUmum::create($request->only(['layanan', 'deskripsi_syarat', 'deskripsi_output']));
 
         return redirect()
             ->route('admin.persyaratan.index')
@@ -53,7 +64,8 @@ class PersyaratanController extends Controller
     public function edit($id)
     {
         $persyaratan = PersyaratanUmum::findOrFail($id);
-        return view('admin.persyaratan.edit', compact('persyaratan'));
+        $formulirs = \App\Models\Formulir::where('aktif', 'Y')->orderBy('jenis_formulir')->get();
+        return view('admin.persyaratan.edit', compact('persyaratan', 'formulirs'));
     }
 
     /**
@@ -66,9 +78,10 @@ class PersyaratanController extends Controller
         $request->validate([
             'layanan'           => 'required|string|max:100|unique:persyaratan_umum,layanan,' . $persyaratan->id,
             'deskripsi_syarat'  => 'required|string',
+            'deskripsi_output'  => 'nullable|string',
         ]);
 
-        $persyaratan->update($request->only(['layanan', 'deskripsi_syarat']));
+        $persyaratan->update($request->only(['layanan', 'deskripsi_syarat', 'deskripsi_output']));
 
         return redirect()
             ->route('admin.persyaratan.index')

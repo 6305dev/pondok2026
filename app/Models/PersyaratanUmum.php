@@ -10,6 +10,7 @@ class PersyaratanUmum extends Model
 
     protected $fillable = [
         'layanan',
-        'deskripsi_syarat'
+        'deskripsi_syarat',
+        'deskripsi_output'
     ];
 }
