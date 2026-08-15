@@ -15,7 +15,7 @@
             <!-- Logo dan Judul -->
             <div class="flex flex-col items-center mt-6 mb-8">
                 <div class="w-20 h-20 md:w-24 md:h-24 mb-4 drop-shadow-md hover:scale-105 transition duration-300">
-                    <img src="{{ asset('icon/online.png') }}" alt="Ikon Formulir Layanan" class="w-full h-full object-contain">
+                    <img src="{{ asset('icon/online.webp') }}" alt="Ikon Formulir Layanan" class="w-full h-full object-contain">
                 </div>
                 <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">Daftar Formulir</h1>
                 <p class="text-xs md:text-sm text-gray-800 font-semibold mt-1">Unduh formulir persyaratan administrasi kependudukan Anda</p>

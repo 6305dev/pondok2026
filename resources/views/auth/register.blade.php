@@ -10,7 +10,7 @@
         </a>
         <div class="text-center mb-6">
             <div class="w-24 h-24 mx-auto mb-4">
-                <img src="{{ asset('icon/daftar.png') }}" alt="Ikon Layanan Online" class="w-full h-full object-contain" id="service-icon">
+                <img src="{{ asset('icon/daftar.webp') }}" alt="Ikon Layanan Online" class="w-full h-full object-contain" id="service-icon">
             </div>
             <h2 class="text-3xl font-bold text-gray-800">Daftar Akun</h2>
             <p class="text-gray-600 mt-2">Silakan isi data dengan lengkap, dan klik simpan</p>
