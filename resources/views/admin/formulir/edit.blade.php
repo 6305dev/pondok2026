@@ -1,9 +1,8 @@
-@extends('adminlte::page')
+@extends('layouts.admin')
 
 @section('title', 'Edit Formulir')
 
 @section('content_header')
-    <h1><i class="fas fa-edit mr-2"></i> Edit Formulir: {{ $formulir->jenis_formulir }}</h1>
 @stop
 
 @section('content')

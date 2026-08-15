@@ -72,7 +72,7 @@
         </section>
         @endif
 
-        <section aria-label="Menu Utama Layanan" class="mt-6 bg-white/20 backdrop-blur-sm rounded-2xl shadow-sm border border-white/20 p-4 md:p-6">
+        <section aria-label="Menu Utama Layanan" class="mt-6 bg-white/20 backdrop-blur-sm rounded-2xl shadow-sm border border-white/50 p-4 md:p-6">
             <h2 class="sr-only">Menu Utama Layanan</h2>
             <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
                 {{-- Layanan Online --}}

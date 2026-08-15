@@ -98,7 +98,7 @@ class DashboardController extends \App\Http\Controllers\Controller
         }
 
         if ($request->filled('nama')) {
-            $query->where('nama', $request->nama);
+            $query->where('nama', 'like', '%' . $request->nama . '%');
         }
 
         // Filter berdasarkan jenis dokumen (ID Dokumen)

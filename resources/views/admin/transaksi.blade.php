@@ -1,4 +1,4 @@
-@extends('adminlte::page')
+@extends('layouts.admin')
 
 @section('title', 'Admin - Transaksi')
 
@@ -9,13 +9,13 @@
 @section('content')
 <div class="container-fluid">
     <!-- Filter Form -->
-    <div class="card mb-4">
+    <div class="card card-filter mb-4">
         <div class="card-header">
             <h5>Filter Data</h5>
         </div>
         <div class="card-body">
             <form method="GET">
-                <div class="row">
+                <div class="row row-tight">
                     <div class="col-md-2">
                         <label>Id Transaksi</label>
                         <input type="text" name="id_trx" class="form-control" placeholder="Masukan Id Trx" value="{{ request('id_trx') }}">
@@ -54,7 +54,7 @@
                         <label>Tgl. Sampai</label>
                         <input type="date" name="tgl_sampai" class="form-control" value="{{ request('tgl_sampai') }}">
                     </div>
-                    <div class="col-md-6 mt-3 d-flex align-items-end">
+                    <div class="col-12 mt-3 d-flex align-items-end">
                         <button type="submit" class="btn btn-primary">Tampilkan</button>
                         <a href="{{ route('admin.transaksi.index') }}" class="btn btn-secondary ml-2">Reset</a>
                     </div>
@@ -73,19 +73,7 @@
             <div class="alert alert-success">{{ session('success') }}</div>
             @endif
 
-            <div class="mb-3">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <label>Show</label>
-                        <select onchange="location = this.value;" class="form-control d-inline-block w-auto ml-2">
-                            <option value="{{ route('admin.transaksi.index', array_merge(request()->all(), ['per_page' => 10])) }}" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
-                            <option value="{{ route('admin.transaksi.index', array_merge(request()->all(), ['per_page' => 25])) }}" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
-                            <option value="{{ route('admin.transaksi.index', array_merge(request()->all(), ['per_page' => 50])) }}" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
-                        </select>
-                        <span class="ml-2">records</span>
-                    </div>
-                </div>
-            </div>
+
         <div class="table-responsive">
             <!-- <table class="table table-bordered table-striped">
                 <thead>
@@ -134,16 +122,17 @@
                     @endforelse
                 </tbody>
             </table> -->
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>ID TRX</th>
-                        <th>Nama & NIK</th>
-                        <th>Jenis Layanan</th>
-                        <th>Progress Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID TRX</th>
+                            <th>Nama & NIK</th>
+                            <th>Jenis Layanan</th>
+                            <th>Progress Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
                 <tbody>
                     @forelse($transaksis as $t)
                     <tr>
@@ -208,7 +197,7 @@
                                             $cleanId = trim((string)$idDetail);
                                         @endphp
                                         
-                                        <li style="margin-bottom: 4px; font-size: 1rem; font-weight: 500; color: #111827;">
+                                        <li style="margin-bottom: 4px; font-size: 0.85rem; font-weight: 500; color: #111827;">
                                             {{-- Jika terdeteksi DATA LAMA, langsung paksa cari ke DATABASE --}}
                                             @if($isDataLama)
                                                 @php
@@ -235,7 +224,7 @@
                                     @endforeach
                                 </ul>
                             @else
-                                <span style="color: #6b7280; font-style: italic; font-size: 1rem;">Tidak ada layanan</span>
+                                <span style="color: #6b7280; font-style: italic; font-size: 0.85rem;">Tidak ada layanan</span>
                             @endif
                         </td>
                         {{-- 🌟 END BAGIAN PERBAIKAN 🌟 --}}
@@ -259,7 +248,7 @@
                                 }
                             @endphp
 
-                            <div class="d-flex flex-column gap-1" style="font-size: 14px; line-height: 1.6;">
+                            <div class="d-flex flex-column gap-1" style="font-size: 12px; line-height: 1.6;">
                                 @if($tglBaru)
                                 <div>
                                     <span class="badge badge-warning" style="width: 75px; display: inline-block; text-align: center; color: #212529;">Baru</span>
@@ -337,14 +326,14 @@
                     @endforelse
                 </tbody>
             </table>
-        </div>
+            </div>
 
             <!-- Pagination -->
-            <div class="d-flex justify-content-between align-items-center mt-3">
-                <div>
-                    Showing {{ $transaksis->firstItem() }} to {{ $transaksis->lastItem() }} of {{ $transaksis->total() }} results
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-3 gap-3">
+                <div class="mb-2 mb-md-0 text-muted">
+                    Showing {{ $transaksis->firstItem() ?? 0 }} to {{ $transaksis->lastItem() ?? 0 }} of {{ $transaksis->total() }} results
                 </div>
-                <div>
+                <div class="w-100 w-md-auto d-flex justify-content-start justify-content-md-end overflow-auto py-1 no-scrollbar">
                     {{ $transaksis->appends(request()->query())->links('pagination::bootstrap-4') }}
                 </div>
             </div>

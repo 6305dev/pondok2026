@@ -1,11 +1,10 @@
-@extends('adminlte::page')
+@extends('layouts.admin')
 
 @section('title', 'Laporan Statistik & Rekapitulasi - Pondok')
 
 @section('content_header')
 <div class="d-flex justify-content-between align-items-center flex-wrap">
     <div>
-        <h1 class="text-dark font-weight-bold"><i class="fas fa-chart-line mr-2 text-primary"></i>Laporan & Statistik</h1>
         <p class="text-muted mb-0">Analisis rekapitulasi data transaksi permohonan secara realtime.</p>
     </div>
     <div class="mt-2 mt-md-0">
@@ -20,32 +19,23 @@
 <div class="container-fluid pb-5">
     
     {{-- 🌟 CARD FILTER TANGGAL 🌟 --}}
-    <div class="card card-outline card-primary shadow-sm border-0 mb-4">
+    <div class="card card-filter mb-4">
         <div class="card-body py-3">
             <form method="GET" action="{{ route('admin.laporan.index') }}" class="mb-0">
-                <div class="row align-items-end">
-                    <div class="col-lg-4 col-md-5 mb-2 mb-md-0">
-                        <label class="form-label font-weight-bold text-secondary text-sm">Tanggal Awal</label>
-                        <div class="input-group shadow-sm-inset">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text bg-white border-right-0"><i class="far fa-calendar-alt text-primary"></i></span>
-                            </div>
-                            <input type="date" name="tgl_awal" class="form-control border-left-0" value="{{ $tgl_awal }}" required>
-                        </div>
+                <div class="row row-tight">
+                    <div class="col-md-2">
+                        <label>Tanggal Awal</label>
+                        <input type="date" name="tgl_awal" class="form-control" value="{{ $tgl_awal }}" required>
                     </div>
-                    <div class="col-lg-4 col-md-5 mb-2 mb-md-0">
-                        <label class="form-label font-weight-bold text-secondary text-sm">Tanggal Akhir</label>
-                        <div class="input-group shadow-sm-inset">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text bg-white border-right-0"><i class="far fa-calendar-alt text-primary"></i></span>
-                            </div>
-                            <input type="date" name="tgl_akhir" class="form-control border-left-0" value="{{ $tgl_akhir }}" required>
-                        </div>
+                    <div class="col-md-2">
+                        <label>Tanggal Akhir</label>
+                        <input type="date" name="tgl_akhir" class="form-control" value="{{ $tgl_akhir }}" required>
                     </div>
-                    <div class="col-lg-4 col-md-2 mt-2 mt-md-0">
-                        <button type="submit" class="btn btn-primary btn-block font-weight-bold shadow-sm transition-all" style="height: calc(2.25rem + 2px);">
-                            <i class="fas fa-filter mr-2"></i> Filter Data
-                        </button>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <div class="w-100">
+                            <button type="submit" class="btn btn-primary">Tampilkan</button>
+                            <a href="{{ route('admin.laporan.index') }}" class="btn btn-secondary ml-2">Reset</a>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -54,7 +44,7 @@
 
     {{-- 🌟 PILIHAN TAB LAPORAN 🌟 --}}
     <div class="card card-primary card-tabs shadow-sm border-0">
-        <div class="card-header p-0 pt-1 bg-white border-bottom">
+        <div class="card-header card-header-tabs p-0 pt-1 bg-white border-bottom">
             <ul class="nav nav-tabs" id="laporanTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active px-4 py-3 font-weight-bold text-secondary" id="wilayah-tab" data-toggle="pill" href="#tab-wilayah" role="tab" aria-controls="tab-wilayah" aria-selected="true">
@@ -98,15 +88,14 @@
                         <div class="col-lg-6 mb-4 mb-lg-0">
                             <div class="accordion" id="accordionWilayah">
                                 @foreach($rekapKecKel as $index => $kec)
-                                    <div class="card card-outline card-primary mb-3 shadow-sm border-0 overflow-hidden rounded-lg">
-                                        <div class="card-header bg-white p-0 border-0">
+                                    <div class="mb-3 shadow-sm border overflow-hidden rounded-lg bg-white" style="border-color: #c8e6c9 !important;">
+                                        <div class="kec-header-wrapper p-0 border-0">
                                             <div class="d-flex justify-content-between align-items-center p-3 cursor-pointer transition-all kec-header w-100" 
-                                                 data-toggle="collapse" 
                                                  data-target="#collapseKec{{ $kec['id'] }}" 
                                                  aria-expanded="false"
                                                  style="cursor: pointer;">
-                                                <h5 class="font-weight-bold mb-0 text-dark d-flex align-items-center" style="font-size: 1.05rem;">
-                                                    <i class="fas fa-map-marker-alt mr-3 text-primary" style="font-size: 1.2rem;"></i> 
+                                                <h5 class="font-weight-bold mb-0 text-dark d-flex align-items-center" style="font-size: 0.88rem;">
+                                                    <i class="fas fa-map-marker-alt mr-3 text-primary" style="font-size: 1.05rem;"></i> 
                                                     Kecamatan {{ $kec['nama'] }}
                                                 </h5>
                                                 <div class="d-flex align-items-center">
@@ -117,8 +106,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div id="collapseKec{{ $kec['id'] }}" class="collapse" data-parent="#accordionWilayah">
-                                            <div class="card-body p-0 border-top">
+                                        <div id="collapseKec{{ $kec['id'] }}" class="kec-collapse" style="display: none;">
+                                            <div class="p-0 border-top">
                                                 @if(count($kec['desas']) > 0)
                                                     <div class="table-responsive">
                                                         <table class="table table-hover table-striped mb-0">
@@ -460,7 +449,7 @@
                                             $color = $starColors[$star] ?? 'bg-secondary';
                                         @endphp
                                         <div class="d-flex align-items-center mb-3">
-                                            <span class="text-secondary font-weight-bold mr-3" style="width: 70px;">{{ $star }} Bintang</span>
+                                            <span class="text-secondary font-weight-bold mr-3" style="width: 70px; font-size: 0.8rem; line-height: 1.2;">{{ $star }} Bintang</span>
                                             <div class="progress flex-grow-1 mr-3" style="height: 12px; border-radius: 6px;">
                                                 <div class="progress-bar {{ $color }}" role="progressbar" style="width: {{ $pct }}%; border-radius: 6px;" aria-valuenow="{{ $pct }}" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
@@ -610,13 +599,32 @@
 <script>
 $(document).ready(function () {
     
-    // Toggle accordion chevron icon
-    $('.collapse').on('show.bs.collapse', function () {
-        var id = $(this).attr('id').replace('collapseKec', '');
-        $('#iconKec' + id).addClass('rotate-180');
-    }).on('hide.bs.collapse', function () {
-        var id = $(this).attr('id').replace('collapseKec', '');
-        $('#iconKec' + id).removeClass('rotate-180');
+    // Manually handle click on kecamatan header to toggle collapse with smooth jQuery slide
+    $(document).on('click', '.kec-header', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        var target = $(this).attr('data-target');
+        var id = target.replace('#collapseKec', '');
+        var icon = $('#iconKec' + id);
+        
+        var isExpanded = $(this).attr('aria-expanded') === 'true';
+        
+        // Accordion behavior: close other panels
+        $('.kec-collapse').not(target).slideUp(300);
+        $('.kec-header').not(this).attr('aria-expanded', 'false');
+        $('.kec-header').not(this).find('.fa-chevron-down').removeClass('rotate-180');
+        
+        // Toggle current panel
+        if (isExpanded) {
+            $(this).attr('aria-expanded', 'false');
+            icon.removeClass('rotate-180');
+            $(target).slideUp(300);
+        } else {
+            $(this).attr('aria-expanded', 'true');
+            icon.addClass('rotate-180');
+            $(target).slideDown(300);
+        }
     });
 
     // Handle Chart.js Redraw on Tab Switch (Avoid 0-width bug)

@@ -29,6 +29,9 @@ class UserController extends Controller
         if ($request->filled('level')) {
             $query->where('role_id', $request->level);
         }
+        if ($request->has('status') && $request->status !== null && $request->status !== '') {
+            $query->where('active', $request->status);
+        }
         if ($request->filled('no_hp')) {
             $query->where('phone', 'like', '%' . $request->no_hp . '%');
         }
@@ -57,14 +60,13 @@ class UserController extends Controller
         return view('admin.user.index', compact('users', 'kecamatans', 'levels', 'desaByKec'));
     }
     
-    // FUNGSI BARU (DIPINDAHKAN DARI ADMIN/USERCONTROLLER.PHP)
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        $levels = DB::table('roles')->select('id', 'nama')->get();
-        
-        // Asumsi view edit ada di 'admin.user.edit' atau Anda menggunakan modal
-        return view('admin.user.edit', compact('user', 'levels'));
+        return redirect()->route('admin.user.index', [
+            'nik' => $user->nik,
+            'open_edit' => $user->id
+        ]);
     }
 
     // FUNGSI UPDATE (SUDAH DISEMPURNAKAN)

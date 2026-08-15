@@ -134,8 +134,14 @@ Route::middleware(['auth'])->group(function () {
         );
     })->name('admin.desa');
 
-        // Rute Khusus Admin (Tidak boleh diakses Operator)
         Route::middleware(['admin.only'])->group(function () {
+            // Rute Sinkronisasi
+            Route::get('/sinkronisasi/transaksi', [\App\Http\Controllers\Admin\SinkronisasiController::class, 'transaksi'])->name('admin.sinkronisasi.transaksi');
+            Route::post('/sinkronisasi/transaksi/{id}/hapus', [\App\Http\Controllers\Admin\SinkronisasiController::class, 'hapusTransaksi'])->name('admin.sinkronisasi.transaksi.hapus');
+            Route::get('/sinkronisasi/wilayah', [\App\Http\Controllers\Admin\SinkronisasiController::class, 'wilayah'])->name('admin.sinkronisasi.wilayah');
+            Route::get('/sinkronisasi/riwayat', [\App\Http\Controllers\Admin\SinkronisasiController::class, 'riwayat'])->name('admin.sinkronisasi.riwayat');
+            Route::post('/sinkronisasi/riwayat/{id}/restore', [\App\Http\Controllers\Admin\SinkronisasiController::class, 'restoreTransaksi'])->name('admin.sinkronisasi.riwayat.restore');
+
             Route::get('/user', [UserController::class, 'index'])->name('admin.user.index');
             Route::get('/user/create', [UserController::class, 'create'])->name('admin.user.create');
             Route::post('/user', [UserController::class, 'store'])->name('admin.user.store');

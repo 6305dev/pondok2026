@@ -1,9 +1,8 @@
-@extends('adminlte::page')
+@extends('layouts.admin')
 
 @section('title', 'Edit Jadwal - ' . $jadwal->hari)
 
 @section('content_header')
-    <h1>Edit Jadwal: {{ $jadwal->hari }}</h1>
 @stop
 
 @section('content')

@@ -1,9 +1,8 @@
-@extends('adminlte::page')
+@extends('layouts.admin')
 
 @section('title', 'Ubah Kata Sandi')
 
 @section('content_header')
-    <h1><i class="fas fa-key mr-2"></i> Ubah Kata Sandi</h1>
 @stop
 
 @section('content')

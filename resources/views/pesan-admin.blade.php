@@ -1,4 +1,4 @@
-@extends('adminlte::page')
+@extends('layouts.admin')
 @section('title', 'Pesan Admin')
 
 @section('content')
@@ -827,12 +827,39 @@
         renderUserList(filtered);
     }
 
+    function updateSidebarBadges() {
+        let totalUnread = 0;
+        allConversations.forEach(c => {
+            const unread = c.messages ? c.messages.filter(m => !m.isRead && m.senderId === c.user.id).length : 0;
+            totalUnread += unread;
+        });
+        const badgeDesktop = document.getElementById('unread-pesan-badge-desktop');
+        const badgeMobile = document.getElementById('unread-pesan-badge-mobile');
+        if (badgeDesktop) {
+            if (totalUnread > 0) {
+                badgeDesktop.textContent = totalUnread;
+                badgeDesktop.style.display = 'inline-block';
+            } else {
+                badgeDesktop.style.display = 'none';
+            }
+        }
+        if (badgeMobile) {
+            if (totalUnread > 0) {
+                badgeMobile.textContent = totalUnread;
+                badgeMobile.style.display = 'inline-block';
+            } else {
+                badgeMobile.style.display = 'none';
+            }
+        }
+    }
+
     async function loadAllConversations() {
         try {
             const response = await fetch(`${SERVER_URL}/chat/messages/admin/${ADMIN_ID}`, {
                 headers: AUTH_HEADERS
             });
             allConversations = await response.json();
+            updateSidebarBadges();
 
             const currentQuery = document.getElementById('search-user-input')?.value || '';
             filterUsers(currentQuery);
@@ -867,6 +894,7 @@
                     msg.isRead = true;
                 }
             });
+            updateSidebarBadges();
             // Re-render user list
             const currentQuery = document.getElementById('search-user-input')?.value || '';
             filterUsers(currentQuery);

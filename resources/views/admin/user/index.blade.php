@@ -1,4 +1,4 @@
-@extends('adminlte::page')
+@extends('layouts.admin')
 
 @section('title', 'Admin - User')
 
@@ -8,20 +8,23 @@
 @section('content')
 <div class="container-fluid">
     <!-- Filter Form -->
-    <div class="card mb-4">
+    <div class="card card-filter mb-4">
         <div class="card-header">
             <h5>Filter Data Pengguna</h5>
         </div>
         <div class="card-body">
             <form method="GET">
-                <div class="row">
-                    <div class="col-md-3">
+                <div class="row row-tight">
+                    <div class="col-md-2 mb-3">
+                        <label>NIK</label>
                         <input type="text" name="nik" class="form-control" placeholder="Masukan NIK" value="{{ request('nik') }}">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2 mb-3">
+                        <label>Nama</label>
                         <input type="text" name="nama" class="form-control" placeholder="Masukan Nama" value="{{ request('nama') }}">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2 mb-3">
+                        <label>Kecamatan</label>
                         <select name="kecamatan" class="form-control">
                             <option value="">Pilih Kecamatan</option>
                             @foreach($kecamatans as $kec)
@@ -31,12 +34,14 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2 mb-3">
+                        <label>Desa/Kel</label>
                         <select name="desa_kel" class="form-control">
                             <option value="">Pilih Desa/Kel</option>
                         </select>
                     </div>
-                    <div class="col-md-3 mt-3">
+                    <div class="col-md-2 mb-3">
+                        <label>Level</label>
                         <select name="level" class="form-control">
                             <option value="">Pilih Level</option>
                             @foreach($levels as $level)
@@ -46,12 +51,24 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-3 mt-3">
+                    <div class="col-md-2 mb-3">
+                        <label>Status</label>
+                        <select name="status" class="form-control">
+                            <option value="">Pilih Status</option>
+                            <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Aktif</option>
+                            <option value="2" {{ request('status') === '2' ? 'selected' : '' }}>Diblokir</option>
+                            <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Tidak Aktif</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <label>No Hp</label>
                         <input type="text" name="no_hp" class="form-control" placeholder="Masukan No Hp" value="{{ request('no_hp') }}">
                     </div>
-                    <div class="col-md-6 mt-3 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary">Cari 🔍</button>
-                        <a href="{{ route('admin.user.index') }}" class="btn btn-secondary ml-2">Reset</a>
+                    <div class="col-md-4 mb-3 d-flex align-items-end">
+                        <div class="w-100">
+                            <button type="submit" class="btn btn-primary">Tampilkan</button>
+                            <a href="{{ route('admin.user.index') }}" class="btn btn-secondary ml-2">Reset</a>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -68,98 +85,86 @@
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
 
-            <div class="mb-3">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <label>Show</label>
-                        <select onchange="location = this.value;" class="form-control d-inline-block w-auto ml-2">
-                            <option value="{{ route('admin.user.index', array_merge(request()->all(), ['per_page' => 10])) }}" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
-                            <option value="{{ route('admin.user.index', array_merge(request()->all(), ['per_page' => 25])) }}" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
-                            <option value="{{ route('admin.user.index', array_merge(request()->all(), ['per_page' => 50])) }}" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
-                        </select>
-                        <span class="ml-2">records</span>
-                    </div>
-                </div>
-            </div>
+
 
             <!-- Tabel User -->
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>NIK</th>
-                        <th>KK</th>
-                        <th>Nama</th>
-                        <th>Email</th>
-                        <th>No Hp</th>
-                        <th>Level</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($users as $user)
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
                         <tr>
-                            {{-- <td>{{ $loop->iteration }}</td> --}}
-                            <td>{{ $users->firstItem() + $loop->index }}</td>
-                            <td>
-                                {{ $user->nik }}
-                                <br>
-                                @if($user->active == 1)
-                                    <span class="badge badge-success">Aktif</span>
-                                @elseif($user->active == 2)
-                                    <span class="badge badge-warning">Diblokir</span>
-                                @else
-                                    <span class="badge badge-danger">Tidak Aktif</span>
-                                @endif
-                            </td>
-                            <td>{{ $user->kk }}</td>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->phone }}</td>
-                            <td>{{ $user->level_name }}</td>
-                            <td>
-                                <!-- Tombol Edit: Buka Modal -->
-                                <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editUserModal"
-                                        data-id="{{ $user->id }}"
-                                        data-nik="{{ $user->nik }}"
-                                        data-kk="{{ $user->kk }}"
-                                        data-name="{{ $user->name }}"
-                                        data-email="{{ $user->email }}"
-                                        data-phone="{{ $user->phone }}"
-                                        data-level="{{ $user->role_id ?? ''}}" 
-                                        data-kecamatan="{{ $user->id_kec ?? '' }}"
-                                        data-desa_kel="{{ $user->kode_desa ?? '' }}">
-                                    Edit
-                                </button>
-
-                                <!-- Tombol Blokir -->
-                                <form action="{{ route('admin.user.blokir', $user->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin memblokir user ini?')">Blokir</button>
-                                </form>
-
-                                <!-- Tombol Reset Password -->
-                                <form action="{{ route('admin.user.resetPassword', $user->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    <button type="submit" class="btn btn-sm btn-warning" onclick="return confirm('Apakah Anda yakin ingin me-reset password pengguna {{ $user->name }} menjadi \'pondokdukcapil\'?')">Reset</button>
-                                </form>
-                            </td>
+                            <th>No</th>
+                            <th>NIK</th>
+                            <th>KK</th>
+                            <th>Nama</th>
+                            <th>No Hp</th>
+                            <th>Level</th>
+                            <th>Status</th>
+                            <th>Action</th>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="8" class="text-center">Tidak ada data</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @forelse($users as $user)
+                            <tr>
+                                {{-- <td>{{ $loop->iteration }}</td> --}}
+                                <td>{{ $users->firstItem() + $loop->index }}</td>
+                                <td>{{ $user->nik }}</td>
+                                <td>{{ $user->kk }}</td>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->phone }}</td>
+                                <td>{{ $user->level_name }}</td>
+                                <td>
+                                    @if($user->active == 1)
+                                        <span class="badge badge-success">Aktif</span>
+                                    @elseif($user->active == 2)
+                                        <span class="badge badge-warning">Diblokir</span>
+                                    @else
+                                        <span class="badge badge-danger">Tidak Aktif</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <!-- Tombol Edit: Buka Modal -->
+                                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editUserModal"
+                                            data-id="{{ $user->id }}"
+                                            data-nik="{{ $user->nik }}"
+                                            data-kk="{{ $user->kk }}"
+                                            data-name="{{ $user->name }}"
+                                            data-email="{{ $user->email }}"
+                                            data-phone="{{ $user->phone }}"
+                                            data-level="{{ $user->role_id ?? ''}}" 
+                                            data-kecamatan="{{ $user->id_kec ?? '' }}"
+                                            data-desa_kel="{{ $user->kode_desa ?? '' }}">
+                                        Edit
+                                    </button>
+
+                                    <!-- Tombol Blokir -->
+                                    <form action="{{ route('admin.user.blokir', $user->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin memblokir user ini?')">Blokir</button>
+                                    </form>
+
+                                    <!-- Tombol Reset Password -->
+                                    <form action="{{ route('admin.user.resetPassword', $user->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-warning" onclick="return confirm('Apakah Anda yakin ingin me-reset password pengguna {{ $user->name }} menjadi \'pondokdukcapil\'?')">Reset</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="8" class="text-center">Tidak ada data</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
 
             <!-- Pagination -->
-            <div class="d-flex justify-content-between align-items-center mt-3">
-                <div>
-                    Showing {{ $users->firstItem() }} to {{ $users->lastItem() }} of {{ $users->total() }} results
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-3 gap-3">
+                <div class="mb-2 mb-md-0 text-muted">
+                    Showing {{ $users->firstItem() ?? 0 }} to {{ $users->lastItem() ?? 0 }} of {{ $users->total() }} results
                 </div>
-                <div>
+                <div class="w-100 w-md-auto d-flex justify-content-start justify-content-md-end overflow-auto py-1 no-scrollbar">
                     {{ $users->appends(request()->query())->links('pagination::bootstrap-4') }}
                 </div>
             </div>
@@ -412,6 +417,15 @@ $(document).ready(function() {
     if (currentKecamatan) {
         $('select[name="kecamatan"]').trigger('change');
     }
+
+    // Pemicu otomatis buka modal edit jika ada parameter open_edit di URL
+    @if(request('open_edit'))
+        var openEditId = "{{ request('open_edit') }}";
+        var $editBtn = $('button[data-id="' + openEditId + '"]');
+        if ($editBtn.length > 0) {
+            $editBtn.click();
+        }
+    @endif
 });
 </script>
 @stop

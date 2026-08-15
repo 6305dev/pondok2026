@@ -1,14 +1,11 @@
-@extends('adminlte::page')
+@extends('layouts.admin')
 
 @section('title', 'Kelola Persyaratan')
 
 @section('content_header')
-    <div class="d-flex justify-content-between align-items-center">
-        <h1><i class="fas fa-file-alt mr-2"></i> Kelola Persyaratan</h1>
-        <a href="{{ route('admin.persyaratan.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus mr-1"></i> Tambah Persyaratan
-        </a>
-    </div>
+    <a href="{{ route('admin.persyaratan.create') }}" class="btn btn-primary btn-sm">
+        <i class="fas fa-plus mr-1"></i> Tambah Persyaratan
+    </a>
 @stop
 
 @section('content')
@@ -16,6 +13,9 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><b>DAFTAR PERSYARATAN</b></h3>
+                    </div>
                     <div class="card-body table-responsive">
                         @if(session('success'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">

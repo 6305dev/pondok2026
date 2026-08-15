@@ -1,15 +1,14 @@
-@extends('adminlte::page')
+@extends('layouts.admin')
 
 @section('title', 'Edit Persyaratan')
 
 @section('content_header')
-    <h1><i class="fas fa-edit mr-2"></i> Edit Persyaratan</h1>
 @stop
 
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-8 mb-4 mb-md-0">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Ubah Data Persyaratan untuk: <strong>{{ $persyaratan->layanan }}</strong></h3>
@@ -77,10 +76,10 @@
 
             <div class="col-md-4">
                 <div class="card">
-                    <div class="card-header bg-info text-white">
+                    <div class="card-header">
                         <h3 class="card-title"><i class="fas fa-file-download mr-1"></i> Daftar Formulir Aktif</h3>
                     </div>
-                    <div class="card-body p-0" style="max-height: 500px; overflow-y: auto;">
+                    <div class="card-body p-0" style="overflow-y: auto;">
                         @if($formulirs->isEmpty())
                             <div class="p-3 text-center text-muted">Belum ada formulir aktif.</div>
                         @else
@@ -134,5 +133,35 @@ function copyCode(id) {
         alert("Kode link HTML berhasil disalin ke clipboard!");
     });
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const leftCard = document.querySelector('.col-md-8 .card');
+    const rightCard = document.querySelector('.col-md-4 .card');
+    const rightBody = document.querySelector('.col-md-4 .card-body');
+    
+    if (leftCard && rightCard && rightBody) {
+        const adjustHeight = () => {
+            if (window.innerWidth >= 768) {
+                rightCard.style.height = 'auto';
+                const leftHeight = leftCard.offsetHeight;
+                rightCard.style.height = leftHeight + 'px';
+                
+                const headerHeight = rightCard.querySelector('.card-header').offsetHeight;
+                const footerHeight = rightCard.querySelector('.card-footer').offsetHeight;
+                const remainingHeight = leftHeight - headerHeight - footerHeight;
+                rightBody.style.height = remainingHeight + 'px';
+                rightBody.style.maxHeight = remainingHeight + 'px';
+            } else {
+                rightCard.style.height = 'auto';
+                rightBody.style.height = 'auto';
+                rightBody.style.maxHeight = '500px';
+            }
+        };
+        
+        // Run after image load or small timeout to ensure layout is complete
+        setTimeout(adjustHeight, 100);
+        window.addEventListener('resize', adjustHeight);
+    }
+});
 </script>
 @stop

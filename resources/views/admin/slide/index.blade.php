@@ -1,9 +1,8 @@
-@extends('adminlte::page')
+@extends('layouts.admin')
 
 @section('title', 'Kelola Gambar Slide')
 
 @section('content_header')
-    <h1><i class="fas fa-images mr-2"></i> Kelola Gambar Slide</h1>
 @stop
 
 @section('content')

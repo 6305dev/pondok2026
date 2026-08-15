@@ -1,9 +1,8 @@
-@extends('adminlte::page')
+@extends('layouts.admin')
 
 @section('title', 'Jadwal Harian')
 
 @section('content_header')
-    <h1>Jadwal Harian</h1>
 @stop
 
 @section('content')

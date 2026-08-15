@@ -1,9 +1,8 @@
-@extends('adminlte::page')
+@extends('layouts.admin')
 
 @section('title', 'Profil Pengguna')
 
 @section('content_header')
-    <h1><i class="fas fa-user-circle mr-2"></i> Profil Anda</h1>
 @stop
 
 @section('content')
